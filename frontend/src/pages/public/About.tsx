@@ -60,7 +60,7 @@ export function About() {
       </Section>
 
       <Section>
-        <SectionHeading eyebrow="Company journey" title="Milestones since 2009" />
+        <SectionHeading eyebrow="Company journey" title="Milestones since 2023" />
         <ol className="mt-10 space-y-0 border-l border-border pl-6">
           {timeline.map((item) => (
             <li key={item.year} className="relative pb-9 last:pb-0">

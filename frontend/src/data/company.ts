@@ -9,7 +9,7 @@ export const company = {
   tagline: "Trusted pharmaceutical manufacturing for a healthier tomorrow",
   intro:
     "Byadhi Cure Lab Private Limited is a WHO-GMP compliant pharmaceutical manufacturing company producing high-quality formulations for hospitals, distributors and healthcare partners across India. Every batch is manufactured under strict quality control and validated processes.",
-  founded: 2009,
+  founded: 2023,
   address: {
     line1: "Plot 42, Pharma Industrial Estate",
     line2: "Sector 7, Bhiwadi",
@@ -31,7 +31,7 @@ export const company = {
 };
 
 export const highlights = [
-  { value: "15+", label: "Years of experience", detail: "Serving healthcare since 2009" },
+  { value: "3+", label: "Years of experience", detail: "Serving healthcare since 2023" },
   { value: "120+", label: "Products", detail: "Tablets, capsules, syrups & injectables" },
   { value: "WHO-GMP", label: "Quality standards", detail: "ISO 9001:2015 certified facility" },
   { value: "8", label: "Production lines", detail: "50 million units monthly capacity" },
@@ -51,7 +51,7 @@ export const values = [
 ];
 
 export const director = {
-  name: "Dr. Ramesh Byadhi",
+  name: "Tuna Swain",
   designation: "Managing Director",
   bio: "A pharmaceutical professional with over 25 years of experience in formulation development and regulated manufacturing, Dr. Byadhi founded the company with a simple conviction: quality medicine should never be a compromise.",
   message:
@@ -59,7 +59,7 @@ export const director = {
 };
 
 export const timeline = [
-  { year: "2009", title: "Company founded", body: "Operations begin with a single tablet manufacturing line." },
+  { year: "2023", title: "Company founded", body: "Operations begin with a single tablet manufacturing line." },
   { year: "2013", title: "ISO 9001 certification", body: "Quality management system formally certified." },
   { year: "2016", title: "Facility expansion", body: "Dedicated liquid orals and capsule blocks commissioned." },
   { year: "2019", title: "WHO-GMP approval", body: "Plant approved under WHO-GMP guidelines." },

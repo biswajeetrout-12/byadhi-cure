@@ -22,6 +22,19 @@ export function useLogin() {
   });
 }
 
+export function useRegister() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: authService.register,
+    onSuccess: (data) => {
+      if (data.ok && data.token) {
+        localStorage.setItem("auth_token", data.token);
+        queryClient.invalidateQueries({ queryKey: ["auth-user"] });
+      }
+    },
+  });
+}
+
 export function useLogout() {
   const queryClient = useQueryClient();
   return useMutation({

@@ -97,7 +97,7 @@ export const adminEnquiries = [
 ];
 
 export const adminUsers = [
-  { id: "U-01", name: "Ramesh Byadhi", email: "ramesh@byadhicurelab.com", role: "Superadmin", status: "Active" },
+  { id: "U-01", name: "Tuna Swain", email: "tuna@byadhicurelab.com", role: "Superadmin", status: "Active" },
   { id: "U-02", name: "Kavita Rao", email: "kavita@byadhicurelab.com", role: "Admin", status: "Active" },
   { id: "U-03", name: "Imran Sheikh", email: "imran@byadhicurelab.com", role: "Editor", status: "Active" },
   { id: "U-04", name: "Medico Distributors", email: "orders@medico.in", role: "Customer", status: "Pending" },
