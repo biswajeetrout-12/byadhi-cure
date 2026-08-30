@@ -7,13 +7,15 @@ import { LinkButton } from "@/components/common/Button";
 import { Section, SectionHeading } from "@/components/common/Section";
 import ProductGrid from "@/components/products/ProductGrid";
 import { company, highlights } from "@/data/company";
-import { products } from "@/data/products";
 import { certifications } from "@/data/site";
+import { useProducts } from "@/hooks/useProducts";
+import Loader from "@/components/common/Loader";
 
 const icons = [Award, FlaskConical, ShieldCheck, Factory];
 
 export function Home() {
-  const featured = products.slice(0, 3);
+  const { data: productsList, isLoading } = useProducts();
+  const featured = productsList ? productsList.slice(0, 3) : [];
 
   return (
     <>
@@ -56,11 +58,22 @@ export function Home() {
         <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
           {highlights.map((item, index) => {
             const Icon = icons[index % icons.length]!;
+            const cardStyles = [
+              { grad: "from-blue-50 to-indigo-50 dark:from-blue-950/30 dark:to-indigo-950/30", border: "border-blue-200/50 dark:border-blue-800/40", bar: "bg-gradient-to-r from-blue-400 to-blue-600", iconBg: "bg-blue-100 dark:bg-blue-900/40", iconCol: "text-blue-500 dark:text-blue-400", valCol: "text-blue-600 dark:text-blue-400" },
+              { grad: "from-emerald-50 to-teal-50 dark:from-emerald-950/30 dark:to-teal-950/30", border: "border-emerald-200/50 dark:border-emerald-800/40", bar: "bg-gradient-to-r from-emerald-400 to-teal-500", iconBg: "bg-emerald-100 dark:bg-emerald-900/40", iconCol: "text-emerald-500 dark:text-emerald-400", valCol: "text-emerald-600 dark:text-emerald-400" },
+              { grad: "from-violet-50 to-purple-50 dark:from-violet-950/30 dark:to-purple-950/30", border: "border-violet-200/50 dark:border-violet-800/40", bar: "bg-gradient-to-r from-violet-400 to-purple-500", iconBg: "bg-violet-100 dark:bg-violet-900/40", iconCol: "text-violet-500 dark:text-violet-400", valCol: "text-violet-600 dark:text-violet-400" },
+              { grad: "from-amber-50 to-orange-50 dark:from-amber-950/30 dark:to-orange-950/30", border: "border-amber-200/50 dark:border-amber-800/40", bar: "bg-gradient-to-r from-amber-400 to-orange-500", iconBg: "bg-amber-100 dark:bg-amber-900/40", iconCol: "text-amber-500 dark:text-amber-400", valCol: "text-amber-600 dark:text-amber-400" },
+            ];
+            const s = cardStyles[index % cardStyles.length]!;
             return (
-              <div key={item.label} className="rounded-lg border border-border bg-card p-6 shadow-card">
-                <Icon className="h-6 w-6 text-accent" />
-                <p className="mt-4 font-display text-3xl font-bold text-primary">{item.value}</p>
-                <p className="mt-1 font-display text-sm font-semibold text-card-foreground">{item.label}</p>
+              <div key={item.label} className={`relative overflow-hidden rounded-2xl border bg-gradient-to-br ${s.grad} ${s.border} p-6 shadow-card card-hover`}>
+                {/* Top accent bar */}
+                <div className={`absolute top-0 left-0 right-0 h-0.5 ${s.bar}`} />
+                <div className={`inline-flex h-10 w-10 items-center justify-center rounded-xl ${s.iconBg}`}>
+                  <Icon className={`h-5 w-5 ${s.iconCol}`} />
+                </div>
+                <p className={`mt-4 font-display text-3xl font-bold ${s.valCol}`}>{item.value}</p>
+                <p className="mt-1 font-display text-sm font-semibold text-foreground/80">{item.label}</p>
                 <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{item.detail}</p>
               </div>
             );
@@ -68,25 +81,31 @@ export function Home() {
         </div>
       </Section>
 
-      <Section muted>
+      <Section muted dots>
         <div className="flex flex-wrap items-end justify-between gap-4">
           <SectionHeading
             eyebrow="Featured products"
             title="A formulary built around everyday clinical needs"
             description="From acute care antibiotics to daily nutraceuticals, each product is manufactured under validated processes."
           />
-          <Link to="/products" className="inline-flex items-center gap-1.5 text-sm font-semibold text-primary">
+          <Link to="/products" className="inline-flex items-center gap-1.5 rounded-lg border border-primary/30 bg-primary/8 px-4 py-2 text-sm font-semibold text-primary transition-all hover:bg-primary hover:text-primary-foreground">
             View all products <ArrowRight className="h-4 w-4" />
           </Link>
         </div>
         <div className="mt-10">
-          <ProductGrid products={featured} />
+          {isLoading ? (
+            <div className="flex justify-center py-12">
+              <Loader size="lg" />
+            </div>
+          ) : (
+            <ProductGrid products={featured} />
+          )}
         </div>
       </Section>
 
-      <Section>
+      <Section dots>
         <div className="grid items-center gap-10 lg:grid-cols-2">
-          <div className="overflow-hidden rounded-lg border border-border">
+          <div className="overflow-hidden rounded-2xl border border-border/60 shadow-raised">
             <img
               src={heroImage}
               alt="Automated tablet packing line"
@@ -102,11 +121,11 @@ export function Home() {
               title="Eight production lines under one controlled roof"
               description="Segregated blocks for oral solids, liquid orals and external preparations, supported by validated HVAC, purified water systems and in-process quality checks at every stage."
             />
-            <ul className="mt-6 space-y-3">
-              {["50 million units monthly capacity", "ISO Class 8 clean room areas", "Automated blister and strip packing", "Batch-level traceability and retention samples"].map(
+            <ul className="mt-6 space-y-2">
+              {["2 million units monthly capacity", "ISO Class 8 clean room areas", "Automated blister and strip packing", "Batch-level traceability and retention samples"].map(
                 (item) => (
-                  <li key={item} className="flex gap-3 text-sm text-muted-foreground">
-                    <ShieldCheck className="mt-0.5 h-4 w-4 shrink-0 text-accent" />
+                  <li key={item} className="flex items-center gap-3 rounded-lg bg-accent-soft/60 px-4 py-2.5 text-sm text-foreground/80">
+                    <ShieldCheck className="h-4 w-4 shrink-0 text-accent" />
                     {item}
                   </li>
                 ),
@@ -119,7 +138,7 @@ export function Home() {
         </div>
       </Section>
 
-      <Section muted>
+      <Section muted grid>
         <div className="grid items-center gap-10 lg:grid-cols-2">
           <div>
             <SectionHeading
@@ -128,18 +147,23 @@ export function Home() {
               description="Our quality management system is independently certified and audited, covering raw material qualification through to finished-goods release."
             />
             <div className="mt-8 grid gap-3 sm:grid-cols-2">
-              {certifications.slice(0, 4).map((cert) => (
-                <div key={cert.id} className="rounded-md border border-border bg-card p-4">
-                  <p className="font-display text-sm font-bold text-card-foreground">{cert.name}</p>
-                  <p className="mt-1 text-xs leading-relaxed text-muted-foreground">{cert.description}</p>
-                </div>
-              ))}
+              {certifications.slice(0, 4).map((cert, i) => {
+                const certColors = [
+                  "border-l-blue-400 from-blue-50/60 dark:from-blue-950/20",
+                  "border-l-emerald-400 from-emerald-50/60 dark:from-emerald-950/20",
+                  "border-l-violet-400 from-violet-50/60 dark:from-violet-950/20",
+                  "border-l-amber-400 from-amber-50/60 dark:from-amber-950/20",
+                ];
+                return (
+                  <div key={cert.id} className={`rounded-xl border-l-2 border border-border bg-gradient-to-br to-card/80 p-4 shadow-card ${certColors[i % certColors.length]}`}>
+                    <p className="font-display text-sm font-bold text-card-foreground">{cert.name}</p>
+                    <p className="mt-1 text-xs leading-relaxed text-muted-foreground">{cert.description}</p>
+                  </div>
+                );
+              })}
             </div>
-            <LinkButton to="/quality" variant="outline" className="mt-8">
-              Quality & certifications
-            </LinkButton>
           </div>
-          <div className="order-first overflow-hidden rounded-lg border border-border lg:order-last">
+          <div className="order-first overflow-hidden rounded-2xl border border-border/60 shadow-raised lg:order-last">
             <img
               src={labImage}
               alt="Quality control analyst working in the laboratory"

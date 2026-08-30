@@ -8,7 +8,13 @@ export async function seedAdmin() {
   try {
     const existing = await User.findOne({ email: process.env.ADMIN_EMAIL });
     if (existing) {
-      console.log("ℹ️  Admin user already exists, skipping seed.");
+      // Migrate old lowercase role to PascalCase if needed
+      if (existing.role === "admin") {
+        await User.updateOne({ email: process.env.ADMIN_EMAIL }, { role: "Admin" });
+        console.log("✅ Admin role migrated from 'admin' to 'Admin'.");
+      } else {
+        console.log("ℹ️  Admin user already exists, skipping seed.");
+      }
       return;
     }
 
@@ -16,7 +22,7 @@ export async function seedAdmin() {
       name: process.env.ADMIN_NAME || "Admin",
       email: process.env.ADMIN_EMAIL,
       password: process.env.ADMIN_PASSWORD,
-      role: "admin",
+      role: "Admin",
       status: "Active",
     });
 

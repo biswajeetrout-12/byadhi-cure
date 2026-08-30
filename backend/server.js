@@ -4,6 +4,7 @@ import cors from "cors";
 
 import { connectDB } from "./config/db.js";
 import { seedAdmin } from "./seed/admin.seed.js";
+import { seedProducts } from "./seed/product.seed.js";
 
 import authRoutes from "./routes/auth.routes.js";
 import productRoutes from "./routes/product.routes.js";
@@ -44,6 +45,7 @@ app.use((err, _req, res, _next) => {
 async function start() {
   await connectDB();
   await seedAdmin();
+  await seedProducts();
   app.listen(PORT, () => {
     console.log(`🚀 Server running on http://localhost:${PORT}`);
     console.log(`📋 API docs: http://localhost:${PORT}/api/health`);

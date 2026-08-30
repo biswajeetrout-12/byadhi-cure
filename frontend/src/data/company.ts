@@ -8,13 +8,13 @@ export const company = {
   shortName: "Byadhi Cure Lab",
   tagline: "Trusted pharmaceutical manufacturing for a healthier tomorrow",
   intro:
-    "Byadhi Cure Lab Private Limited is a WHO-GMP compliant pharmaceutical manufacturing company producing high-quality formulations for hospitals, distributors and healthcare partners across India. Every batch is manufactured under strict quality control and validated processes.",
+    "Byadhi Cure Lab Private Limited is a top pharmaceutical company, handling a variety of cardiovascular, diabetic, and hypertension medications. Being an ISO-certified company that strives to eradicate cardiovascular and diabetic problems",
   founded: 2023,
   address: {
-    line1: "Plot 42, Pharma Industrial Estate",
-    line2: "Sector 7, Bhiwadi",
-    city: "Alwar, Rajasthan",
-    postalCode: "301019",
+    line1: "Plot 1537/2418, Phase II",
+    line2: "Bhagabanpur",
+    city: "Bhubaneswar, Odisha",
+    postalCode: "751023",
     country: "India",
   },
   phone: "+91 98765 43210",
@@ -32,9 +32,9 @@ export const company = {
 
 export const highlights = [
   { value: "3+", label: "Years of experience", detail: "Serving healthcare since 2023" },
-  { value: "120+", label: "Products", detail: "Tablets, capsules, syrups & injectables" },
+  { value: "6+", label: "Products", detail: "Tablets, capsules, syrups & injectables" },
   { value: "WHO-GMP", label: "Quality standards", detail: "ISO 9001:2015 certified facility" },
-  { value: "8", label: "Production lines", detail: "50 million units monthly capacity" },
+  { value: "8", label: "Production lines", detail: "2 million units monthly capacity" },
 ];
 
 export const mission =

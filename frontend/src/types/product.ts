@@ -5,6 +5,7 @@ export interface Product {
   shortDescription: string;
   description: string;
   image: string;
+  imagePublicId?: string;
   composition: string[];
   uses: string[];
   benefits: string[];

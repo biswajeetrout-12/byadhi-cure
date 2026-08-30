@@ -5,8 +5,6 @@ export const publicRoutes = {
   products: "/products",
   productDetail: "/products/:id",
   manufacturing: "/manufacturing",
-  quality: "/quality",
-  gallery: "/gallery",
   contact: "/contact",
   login: "/login",
   forgotPassword: "/forgot-password",

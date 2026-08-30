@@ -24,10 +24,12 @@
   }
 }
 
+/* ─── Hero overlay ───────────────────────────────────────────────────────── */
 @utility hero-overlay {
   background-image: var(--gradient-hero);
 }
 
+/* ─── Shadows ────────────────────────────────────────────────────────────── */
 @utility shadow-card {
   box-shadow: var(--shadow-card);
 }
@@ -36,6 +38,15 @@
   box-shadow: var(--shadow-raised);
 }
 
+@utility shadow-glow-primary {
+  box-shadow: var(--shadow-glow-primary);
+}
+
+@utility shadow-glow-accent {
+  box-shadow: var(--shadow-glow-accent);
+}
+
+/* ─── Eyebrow label ──────────────────────────────────────────────────────── */
 @utility eyebrow {
   font-family: var(--font-display);
   font-size: 0.75rem;
@@ -45,17 +56,173 @@
   color: var(--color-accent);
 }
 
+/* ─── Entrance animations ────────────────────────────────────────────────── */
 @utility fade-up {
-  animation: fade-up 0.5s ease-out both;
+  animation: fade-up 0.55s ease-out both;
+}
+
+@utility fade-in {
+  animation: fade-in 0.4s ease-out both;
 }
 
 @keyframes fade-up {
-  from {
-    opacity: 0;
-    transform: translateY(12px);
-  }
-  to {
-    opacity: 1;
-    transform: none;
-  }
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: none; }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* ─── Gradient card backgrounds ──────────────────────────────────────────── */
+@utility card-gradient-blue {
+  background-image: var(--gradient-card-blue);
+}
+
+@utility card-gradient-green {
+  background-image: var(--gradient-card-green);
+}
+
+@utility card-gradient-purple {
+  background-image: var(--gradient-card-purple);
+}
+
+@utility card-gradient-amber {
+  background-image: var(--gradient-card-amber);
+}
+
+/* ─── Glassmorphism card ─────────────────────────────────────────────────── */
+@utility glass-card {
+  background: oklch(1 0 0 / 0.7);
+  backdrop-filter: blur(12px) saturate(1.4);
+  -webkit-backdrop-filter: blur(12px) saturate(1.4);
+  border: 1px solid oklch(1 0 0 / 0.55);
+  box-shadow: var(--shadow-card);
+}
+
+.dark .glass-card {
+  background: oklch(0.25 0.04 252 / 0.65);
+  border-color: oklch(1 0 0 / 0.08);
+}
+
+/* ─── Decorated card with left accent bar ────────────────────────────────── */
+@utility accent-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border);
+  background: var(--color-card);
+  box-shadow: var(--shadow-card);
+  transition: box-shadow 0.25s ease, transform 0.25s ease;
+}
+
+@utility accent-card-blue {
+  border-left: 3px solid var(--color-primary);
+  background-image: var(--gradient-card-blue);
+}
+
+@utility accent-card-green {
+  border-left: 3px solid var(--color-accent);
+  background-image: var(--gradient-card-green);
+}
+
+@utility accent-card-purple {
+  border-left: 3px solid oklch(0.58 0.18 290);
+  background-image: var(--gradient-card-purple);
+}
+
+@utility accent-card-amber {
+  border-left: 3px solid oklch(0.70 0.17 70);
+  background-image: var(--gradient-card-amber);
+}
+
+/* ─── Section pattern backgrounds ────────────────────────────────────────── */
+@utility bg-dots {
+  background-image: radial-gradient(circle, oklch(0.44 0.15 248 / 0.10) 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+
+@utility bg-grid {
+  background-image:
+    linear-gradient(oklch(0.44 0.15 248 / 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, oklch(0.44 0.15 248 / 0.06) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+
+/* ─── Shimmer loading skeleton ───────────────────────────────────────────── */
+@utility shimmer {
+  background: linear-gradient(
+    90deg,
+    var(--color-muted) 25%,
+    oklch(0.92 0.012 238) 50%,
+    var(--color-muted) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.6s infinite;
+}
+
+@keyframes shimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* ─── Hover lift for cards ───────────────────────────────────────────────── */
+@utility card-hover {
+  transition: transform 0.22s ease, box-shadow 0.22s ease;
+}
+.card-hover:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-raised);
+}
+
+/* ─── Gradient text ──────────────────────────────────────────────────────── */
+@utility text-gradient-primary {
+  background: linear-gradient(135deg, var(--color-primary) 0%, oklch(0.55 0.12 210) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+@utility text-gradient-accent {
+  background: linear-gradient(135deg, var(--color-accent) 0%, oklch(0.48 0.14 248) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* ─── Pill badge ─────────────────────────────────────────────────────────── */
+@utility badge-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.2rem 0.7rem;
+  border-radius: 9999px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  background: var(--color-primary-soft);
+  color: var(--color-primary);
+  border: 1px solid oklch(0.44 0.15 248 / 0.18);
+}
+
+@utility badge-accent {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.2rem 0.7rem;
+  border-radius: 9999px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  background: var(--color-accent-soft);
+  color: var(--color-accent);
+  border: 1px solid oklch(0.57 0.13 170 / 0.18);
+}
+
+/* ─── Section gradient base ──────────────────────────────────────────────── */
+@utility section-gradient {
+  background-image: var(--gradient-section);
 }

@@ -7,6 +7,7 @@ const productSchema = new mongoose.Schema(
     shortDescription: { type: String, required: true },
     description: { type: String, required: true },
     image: { type: String, default: "" },
+    imagePublicId: { type: String, default: "" },
     composition: { type: [String], default: [] },
     uses: { type: [String], default: [] },
     benefits: { type: [String], default: [] },

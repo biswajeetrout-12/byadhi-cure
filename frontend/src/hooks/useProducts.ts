@@ -1,6 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { productService } from "@/services/product.service";
-import { Product } from "@/data/products";
+import { productService, type ProductSubmission } from "@/services/product.service";
+import type { Product } from "@/types/product";
 
 export function useProducts() {
   return useQuery({
@@ -20,7 +20,7 @@ export function useProduct(id: string) {
 export function useCreateProduct() {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (product: Omit<Product, "id">) => productService.createProduct(product),
+    mutationFn: (product: ProductSubmission) => productService.createProduct(product),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["products"] });
     },
@@ -30,7 +30,7 @@ export function useCreateProduct() {
 export function useUpdateProduct() {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: ({ id, updates }: { id: string; updates: Partial<Product> }) =>
+    mutationFn: ({ id, updates }: { id: string; updates: ProductSubmission }) =>
       productService.updateProduct(id, updates),
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ["products"] });

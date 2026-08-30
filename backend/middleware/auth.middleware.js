@@ -31,7 +31,8 @@ export async function requireAuth(req, res, next) {
  * Allows only users with role === "admin"
  */
 export function requireAdmin(req, res, next) {
-  if (!req.user || req.user.role !== "admin") {
+  const role = typeof req.user?.role === "string" ? req.user.role.toLowerCase() : "";
+  if (!req.user || role !== "admin") {
     return res.status(403).json({ ok: false, message: "Admin access required" });
   }
   next();

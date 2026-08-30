@@ -6,14 +6,14 @@ type Variant = "primary" | "accent" | "outline" | "ghost" | "onDark";
 type Size = "sm" | "md" | "lg";
 
 const base =
-  "inline-flex items-center justify-center gap-2 rounded-md font-display font-semibold tracking-tight transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:pointer-events-none disabled:opacity-50";
+  "inline-flex items-center justify-center gap-2 rounded-lg font-display font-semibold tracking-tight transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:pointer-events-none disabled:opacity-50";
 
 const variants: Record<Variant, string> = {
-  primary: "bg-primary text-primary-foreground hover:bg-primary/90",
-  accent: "bg-accent text-accent-foreground hover:bg-accent/90",
-  outline: "border border-border bg-background text-foreground hover:bg-muted",
+  primary: "bg-primary text-primary-foreground hover:bg-primary/85 shadow-glow-primary hover:shadow-raised",
+  accent: "bg-accent text-accent-foreground hover:bg-accent/85 shadow-glow-accent",
+  outline: "border border-border bg-card text-foreground hover:bg-muted hover:border-primary/40",
   ghost: "text-primary hover:bg-primary-soft",
-  onDark: "border border-primary-foreground/40 text-primary-foreground hover:bg-primary-foreground/10",
+  onDark: "border border-primary-foreground/40 text-primary-foreground hover:bg-primary-foreground/15 backdrop-blur-sm",
 };
 
 const sizes: Record<Size, string> = {

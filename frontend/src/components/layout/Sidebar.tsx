@@ -1,24 +1,21 @@
 import { NavLink, Link } from "react-router-dom";
 import {
   Building2,
-  Images,
   LayoutDashboard,
   Mail,
   Package,
   Settings,
-  ShieldCheck,
   Users,
   X,
 } from "lucide-react";
 import { company } from "@/data/company";
 import { cn } from "@/lib/utils";
+import logo from "@/assets/logos/logo.png";
 
 export const sidebarItems = [
   { label: "Dashboard", to: "/admin/dashboard", icon: LayoutDashboard },
   { label: "Company Information", to: "/admin/company", icon: Building2 },
   { label: "Products Management", to: "/admin/products", icon: Package },
-  { label: "Gallery Management", to: "/admin/gallery", icon: Images },
-  { label: "Certifications", to: "/admin/certifications", icon: ShieldCheck },
   { label: "Enquiries", to: "/admin/enquiries", icon: Mail },
   { label: "Users", to: "/admin/users", icon: Users },
   { label: "Settings", to: "/admin/settings", icon: Settings },
@@ -39,9 +36,16 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
         )}
       >
         <div className="flex items-center justify-between gap-2 border-b border-sidebar-border px-5 py-4">
-          <Link to="/" className="min-w-0">
-            <p className="truncate font-display text-sm font-bold">{company.shortName}</p>
-            <p className="text-[11px] uppercase tracking-[0.16em] text-sidebar-foreground/60">Admin panel</p>
+          <Link to="/" className="flex items-center gap-3 min-w-0">
+            <img
+              src={logo}
+              alt="Byadhi Cure Lab Logo"
+              className="h-9 w-9 shrink-0 rounded-full object-cover"
+            />
+            <div className="min-w-0">
+              <p className="truncate font-display text-sm font-bold">{company.shortName}</p>
+              <p className="text-[11px] uppercase tracking-[0.16em] text-sidebar-foreground/60">Admin panel</p>
+            </div>
           </Link>
           <button
             type="button"

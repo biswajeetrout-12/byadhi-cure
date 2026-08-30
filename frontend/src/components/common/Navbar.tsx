@@ -1,28 +1,26 @@
-import { Link } from "@tanstack/react-router";
+import { Link, NavLink } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Menu, X } from "lucide-react";
 import { company } from "@/data/company";
 import { LinkButton } from "./Button";
 import { cn } from "@/lib/utils";
+import logo from "@/assets/logos/logo.png";
 
 const navItems = [
   { label: "Home", to: "/" },
   { label: "About Us", to: "/about" },
   { label: "Products", to: "/products" },
   { label: "Manufacturing", to: "/manufacturing" },
-  { label: "Quality & Certifications", to: "/quality" },
-  { label: "Gallery", to: "/gallery" },
   { label: "Contact Us", to: "/contact" },
 ] as const;
 
 function Logo() {
   return (
-    <span className="grid h-11 w-11 shrink-0 place-items-center rounded-md bg-primary text-primary-foreground">
-      <svg viewBox="0 0 24 24" className="h-6 w-6" fill="none" stroke="currentColor" strokeWidth={2} aria-hidden="true">
-        <path d="M12 3v18M3 12h18" strokeLinecap="round" />
-        <circle cx="12" cy="12" r="9.2" className="opacity-40" />
-      </svg>
-    </span>
+    <img
+      src={logo}
+      alt="Byadhi Cure Lab Logo"
+      className="h-11 w-11 shrink-0 rounded-full object-cover"
+    />
   );
 }
 
@@ -56,15 +54,16 @@ export default function Navbar() {
 
         <nav className="hidden items-center gap-0.5 xl:flex">
           {navItems.map((item) => (
-            <Link
+            <NavLink
               key={item.to}
               to={item.to}
-              activeOptions={{ exact: item.to === "/" }}
-              className={linkBase}
-              activeProps={{ className: "text-primary bg-primary-soft" }}
+              end={item.to === "/"}
+              className={({ isActive }) =>
+                cn(linkBase, isActive && "text-primary bg-primary-soft")
+              }
             >
               {item.label}
-            </Link>
+            </NavLink>
           ))}
           <LinkButton to="/login" variant="primary" size="sm" className="ml-3">
             Login
@@ -90,16 +89,20 @@ export default function Navbar() {
       >
         <nav className="flex flex-col gap-1 px-4 py-4 sm:px-6">
           {navItems.map((item) => (
-            <Link
+            <NavLink
               key={item.to}
               to={item.to}
-              activeOptions={{ exact: item.to === "/" }}
+              end={item.to === "/"}
               onClick={() => setOpen(false)}
-              className="rounded-md px-3 py-3 text-sm font-medium text-foreground/80 transition-colors hover:bg-muted"
-              activeProps={{ className: "bg-primary-soft text-primary" }}
+              className={({ isActive }) =>
+                cn(
+                  "rounded-md px-3 py-3 text-sm font-medium text-foreground/80 transition-colors hover:bg-muted",
+                  isActive && "bg-primary-soft text-primary"
+                )
+              }
             >
               {item.label}
-            </Link>
+            </NavLink>
           ))}
           <LinkButton to="/login" size="md" className="mt-2" onClick={() => setOpen(false)}>
             Login

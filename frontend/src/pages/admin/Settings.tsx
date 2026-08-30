@@ -11,11 +11,11 @@ export function Settings() {
         <h2 className="font-display text-lg font-bold text-card-foreground">Account</h2>
         <label className="mt-5 block text-sm font-medium text-card-foreground">
           Display name
-          <input className={fieldClass} defaultValue="Ramesh Byadhi" />
+          <input className={fieldClass} defaultValue="Tuna Swain" />
         </label>
         <label className="mt-4 block text-sm font-medium text-card-foreground">
           Email
-          <input className={fieldClass} defaultValue="ramesh@byadhicurelab.com" />
+          <input className={fieldClass} defaultValue="[EMAIL_ADDRESS]" />
         </label>
         <Button type="submit" className="mt-6">
           Update account

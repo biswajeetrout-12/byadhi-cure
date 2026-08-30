@@ -15,8 +15,6 @@ import About from "@/pages/public/About";
 import Products from "@/pages/public/Products";
 import ProductDetails from "@/pages/public/ProductDetails";
 import Manufacturing from "@/pages/public/Manufacturing";
-import Quality from "@/pages/public/Quality";
-import Gallery from "@/pages/public/Gallery";
 import Contact from "@/pages/public/Contact";
 import NotFound from "@/pages/public/NotFound";
 
@@ -28,8 +26,7 @@ import ForgotPassword from "@/pages/auth/ForgotPassword";
 import Dashboard from "@/pages/admin/Dashboard";
 import Company from "@/pages/admin/Company";
 import AdminProducts from "@/pages/admin/Products";
-import AdminGallery from "@/pages/admin/Gallery";
-import Certifications from "@/pages/admin/Certifications";
+
 import Enquiries from "@/pages/admin/Enquiries";
 import Users from "@/pages/admin/Users";
 import Settings from "@/pages/admin/Settings";
@@ -44,8 +41,6 @@ export function AppRoutes() {
         <Route path="/products" element={<Products />} />
         <Route path="/products/:id" element={<ProductDetails />} />
         <Route path="/manufacturing" element={<Manufacturing />} />
-        <Route path="/quality" element={<Quality />} />
-        <Route path="/gallery" element={<Gallery />} />
         <Route path="/contact" element={<Contact />} />
       </Route>
 
@@ -67,8 +62,7 @@ export function AppRoutes() {
         <Route path="dashboard" element={<Dashboard />} />
         <Route path="company" element={<Company />} />
         <Route path="products" element={<AdminProducts />} />
-        <Route path="gallery" element={<AdminGallery />} />
-        <Route path="certifications" element={<Certifications />} />
+
         <Route path="enquiries" element={<Enquiries />} />
         <Route path="users" element={<Users />} />
         <Route path="settings" element={<Settings />} />

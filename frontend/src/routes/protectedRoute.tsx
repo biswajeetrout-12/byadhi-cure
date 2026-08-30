@@ -1,4 +1,3 @@
-import React from "react";
 import { Navigate } from "react-router-dom";
 import { useAuth } from "@/context/AuthContext";
 import Loader from "@/components/common/Loader";
@@ -23,7 +22,7 @@ export function ProtectedRoute({ children, adminOnly = false }: ProtectedRoutePr
     return <Navigate to="/login" replace />;
   }
 
-  if (adminOnly && user?.role !== "admin") {
+  if (adminOnly && user?.role !== "Admin") {
     return <Navigate to="/" replace />;
   }
 

@@ -29,7 +29,7 @@ export async function register(req, res) {
       return res.status(409).json({ ok: false, message: "An account with this email already exists" });
     }
 
-    const user = await User.create({ name, email, password, role: "user" });
+    const user = await User.create({ name, email, password, role: "User" });
     const token = signToken(user._id);
 
     return res.status(201).json({

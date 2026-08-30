@@ -7,8 +7,6 @@ const quickLinks = [
   { label: "About Us", to: "/about" },
   { label: "Products", to: "/products" },
   { label: "Manufacturing", to: "/manufacturing" },
-  { label: "Quality & Certifications", to: "/quality" },
-  { label: "Gallery", to: "/gallery" },
   { label: "Contact Us", to: "/contact" },
 ] as const;
 

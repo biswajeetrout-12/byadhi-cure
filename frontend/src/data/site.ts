@@ -83,10 +83,10 @@ export const galleryItems: GalleryItem[] = [
 ];
 
 export const adminStats = [
-  { label: "Total products", value: "120" },
-  { label: "Gallery images", value: "248" },
-  { label: "Open enquiries", value: "17" },
-  { label: "Registered users", value: "64" },
+  { label: "Total products", value: "6" },
+  { label: "Gallery images", value: "10" },
+  { label: "Open enquiries", value: "0" },
+  { label: "Registered users", value: "1" },
 ];
 
 export const adminEnquiries = [

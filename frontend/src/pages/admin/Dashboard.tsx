@@ -1,8 +1,13 @@
 import React from "react";
 import { adminEnquiries, adminStats } from "@/data/site";
-import { products } from "@/data/products";
+import Loader from "@/components/common/Loader";
+import EmptyState from "@/components/common/EmptyState";
+import { useProducts } from "@/hooks/useProducts";
 
 export function Dashboard() {
+  const { data: products, isLoading, isError } = useProducts();
+  const recentProducts = products?.slice(0, 5) ?? [];
+
   return (
     <div className="space-y-6">
       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
@@ -40,14 +45,32 @@ export function Dashboard() {
           <div className="border-b border-border px-5 py-4">
             <h2 className="font-display text-base font-bold text-card-foreground">Recently updated products</h2>
           </div>
-          <ul className="divide-y divide-border">
-            {products.slice(0, 5).map((product) => (
-              <li key={product.id} className="px-5 py-4">
-                <p className="truncate text-sm font-medium text-card-foreground">{product.name}</p>
-                <p className="truncate text-xs text-muted-foreground">{product.category}</p>
-              </li>
-            ))}
-          </ul>
+          <div className="p-5">
+            {isLoading ? (
+              <Loader size="md" />
+            ) : isError ? (
+              <EmptyState
+                className="border-0 p-0"
+                title="Unable to load products"
+                description="The dashboard could not fetch the latest products from the API."
+              />
+            ) : recentProducts.length === 0 ? (
+              <EmptyState
+                className="border-0 p-0"
+                title="No products yet"
+                description="Once products are created in the backend, they will appear here automatically."
+              />
+            ) : (
+              <ul className="divide-y divide-border">
+                {recentProducts.map((product) => (
+                  <li key={product.id} className="px-0 py-4 first:pt-0 last:pb-0">
+                    <p className="truncate text-sm font-medium text-card-foreground">{product.name}</p>
+                    <p className="truncate text-xs text-muted-foreground">{product.category}</p>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
         </div>
       </div>
     </div>
