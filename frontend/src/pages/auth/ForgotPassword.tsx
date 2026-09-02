@@ -23,7 +23,6 @@ export function ForgotPassword() {
           <input
             type="email"
             className="mt-1.5 w-full rounded-lg border border-input bg-background px-3.5 py-2.5 text-sm text-foreground outline-none transition-all placeholder:text-muted-foreground focus:border-primary focus:ring-2 focus:ring-ring/20"
-            placeholder="you@company.com"
             autoComplete="email"
             required
           />

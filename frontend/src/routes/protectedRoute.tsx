@@ -22,7 +22,7 @@ export function ProtectedRoute({ children, adminOnly = false }: ProtectedRoutePr
     return <Navigate to="/login" replace />;
   }
 
-  if (adminOnly && user?.role !== "Admin") {
+  if (adminOnly && user?.role !== "Admin" && user?.role !== "Superadmin") {
     return <Navigate to="/" replace />;
   }
 

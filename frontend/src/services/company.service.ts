@@ -1,16 +1,17 @@
-import { delay } from "./api";
-import { company } from "@/data/company";
+import { apiFetch } from "./api";
 import { CompanyInfo } from "@/types/company";
-
-let mockCompany = { ...company };
 
 export const companyService = {
   getCompanyInfo: async (): Promise<CompanyInfo> => {
-    return delay(mockCompany);
+    const response = await apiFetch<{ ok: boolean; data: CompanyInfo }>("/company");
+    return response.data;
   },
 
   updateCompanyInfo: async (updates: Partial<CompanyInfo>): Promise<CompanyInfo> => {
-    mockCompany = { ...mockCompany, ...updates };
-    return delay(mockCompany);
+    const response = await apiFetch<{ ok: boolean; data: CompanyInfo }>("/company", {
+      method: "PUT",
+      body: JSON.stringify(updates),
+    });
+    return response.data;
   },
 };

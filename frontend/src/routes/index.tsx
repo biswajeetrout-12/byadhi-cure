@@ -39,7 +39,7 @@ export function AppRoutes() {
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
         <Route path="/products" element={<Products />} />
-        <Route path="/products/:id" element={<ProductDetails />} />
+        <Route path="/products/:slug" element={<ProductDetails />} />
         <Route path="/manufacturing" element={<Manufacturing />} />
         <Route path="/contact" element={<Contact />} />
       </Route>

@@ -10,6 +10,7 @@ import {
 } from "lucide-react";
 import { company } from "@/data/company";
 import { cn } from "@/lib/utils";
+import { useCompany } from "@/hooks/useCompany";
 import logo from "@/assets/logos/logo.png";
 
 export const sidebarItems = [
@@ -27,6 +28,9 @@ interface SidebarProps {
 }
 
 export function Sidebar({ isOpen, onClose }: SidebarProps) {
+  const { data: companyFromDb } = useCompany();
+  const activeCompany = companyFromDb || company;
+
   return (
     <>
       <aside
@@ -43,7 +47,7 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
               className="h-9 w-9 shrink-0 rounded-full object-cover"
             />
             <div className="min-w-0">
-              <p className="truncate font-display text-sm font-bold">{company.shortName}</p>
+              <p className="truncate font-display text-sm font-bold">{activeCompany.shortName}</p>
               <p className="text-[11px] uppercase tracking-[0.16em] text-sidebar-foreground/60">Admin panel</p>
             </div>
           </Link>

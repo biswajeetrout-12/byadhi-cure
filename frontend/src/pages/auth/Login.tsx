@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { Lock, UserPlus, Info, CheckCircle2, Eye, EyeOff } from "lucide-react";
 import { Button } from "@/components/common/Button";
 import { company } from "@/data/company";
@@ -8,16 +8,23 @@ import { toast } from "sonner";
 
 const fieldClass =
   "mt-1.5 w-full rounded-lg border border-input bg-background px-3.5 py-2.5 text-sm text-foreground outline-none transition-all placeholder:text-muted-foreground focus:border-primary focus:ring-2 focus:ring-ring/20";
+const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+
+type GoogleCredentialResponse = { credential: string };
+type GoogleApi = { accounts: { id: { initialize: (options: { client_id: string; callback: (response: GoogleCredentialResponse) => void }) => void; prompt: () => void } } };
+declare global { interface Window { google?: GoogleApi } }
 
 export function Login() {
-  const [activeTab, setActiveTab] = useState<"signin" | "signup">("signin");
+  const [searchParams] = useSearchParams();
+  const redirect = searchParams.get("redirect") || "/";
+  const [activeTab, setActiveTab] = useState<"signin" | "signup">(searchParams.get("mode") === "signup" ? "signup" : "signin");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
-  const { login, register } = useAuth();
+  const { login, register, googleLogin } = useAuth();
   const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -26,24 +33,28 @@ export function Login() {
       toast.error("Please fill in all required fields.");
       return;
     }
+    if (!emailPattern.test(email.trim())) {
+      toast.error("Please enter a valid email address.");
+      return;
+    }
 
     setIsSubmitting(true);
     try {
       if (activeTab === "signin") {
         const data = await login({ email, password });
         toast.success("Signed in successfully!");
-        if (data.user?.role === "Admin") {
+        if (data.user?.role === "Admin" || data.user?.role === "Superadmin") {
           navigate("/admin/dashboard");
         } else {
-          navigate("/");
+          navigate(redirect);
         }
       } else {
         const data = await register({ name, email, password });
         toast.success("Account created successfully!");
-        if (data.user?.role === "Admin") {
+        if (data.user?.role === "Admin" || data.user?.role === "Superadmin") {
           navigate("/admin/dashboard");
         } else {
-          navigate("/");
+          navigate(redirect);
         }
       }
     } catch (err: any) {
@@ -53,11 +64,38 @@ export function Login() {
     }
   };
 
+  useEffect(() => {
+    const clientId = import.meta.env["VITE_GOOGLE_CLIENT_ID"];
+    if (clientId && window.google) {
+      window.google.accounts.id.initialize({ client_id: clientId, callback: handleGoogleCredential });
+    }
+  }, []);
+
+  const handleGoogleCredential = async ({ credential }: GoogleCredentialResponse) => {
+    setIsSubmitting(true);
+    try {
+      const data = await googleLogin(credential);
+      toast.success("Signed in with Google successfully!");
+      navigate(data.user?.role === "Admin" || data.user?.role === "Superadmin" ? "/admin/dashboard" : redirect);
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : "Google sign-in failed.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   const handleGoogleSignIn = () => {
-    toast.info("Google Sign-In is in demo mode. Auto-filling administrator credentials...");
-    setEmail(import.meta.env['VITE_ADMIN_EMAIL'] || "");
-    setPassword(import.meta.env['VITE_ADMIN_PASSWORD'] || "");
-    setActiveTab("signin");
+    const clientId = import.meta.env["VITE_GOOGLE_CLIENT_ID"];
+    if (!clientId) {
+      toast.error("Google sign-in is not configured. Add VITE_GOOGLE_CLIENT_ID.");
+      return;
+    }
+    if (!window.google) {
+      toast.error("Google sign-in is still loading. Please try again.");
+      return;
+    }
+    window.google.accounts.id.initialize({ client_id: clientId, callback: handleGoogleCredential });
+    window.google.accounts.id.prompt();
   };
 
   return (
@@ -111,28 +149,15 @@ export function Login() {
       <h1 className="font-display text-2xl font-bold text-foreground tracking-tight">
         {activeTab === "signin" ? "Welcome Back" : "Create Account"}
       </h1>
-      <p className="mt-2 text-sm text-muted-foreground leading-relaxed">
-        {activeTab === "signin"
-          ? `Access your ${company.shortName} partner or administrator account.`
-          : `Join ${company.shortName} as a registered healthcare partner.`}
-      </p>
-
       {/* Professional Callout: "If not registered, first register" */}
-      {activeTab === "signin" ? (
+      {activeTab === "signin" ?
         <div className="mt-5 flex items-start gap-3 rounded-xl border border-primary/20 bg-primary-soft/50 p-4 text-xs text-muted-foreground">
           <Info className="h-4.5 w-4.5 shrink-0 text-primary mt-0.5" />
           <div>
             <span className="font-bold text-foreground">New to Byadhi Cure?</span> If you do not have an active account yet, you must first register under the <button type="button" onClick={() => setActiveTab("signup")} className="font-bold text-primary underline hover:text-primary/80 transition-colors">Sign Up</button> tab to configure your partner access.
           </div>
         </div>
-      ) : (
-        <div className="mt-5 flex items-start gap-3 rounded-xl border border-accent/20 bg-accent-soft/40 p-4 text-xs text-muted-foreground">
-          <CheckCircle2 className="h-4.5 w-4.5 shrink-0 text-accent mt-0.5" />
-          <div>
-            <span className="font-bold text-foreground">Partner Verification:</span> Submitting this registration form instantly configures a verified partner profile with default access status.
-          </div>
-        </div>
-      )}
+       : null}
 
       {/* Third Party Auth */}
       <div className="mt-6">
@@ -182,7 +207,6 @@ export function Login() {
               value={name}
               onChange={(e) => setName(e.target.value)}
               className={fieldClass}
-              placeholder="John Doe"
               required
             />
           </label>
@@ -195,7 +219,7 @@ export function Login() {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             className={fieldClass}
-            placeholder="you@company.com"
+            pattern={emailPattern.source}
             autoComplete="email"
             required
           />
@@ -209,7 +233,6 @@ export function Login() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               className="w-full rounded-lg border border-input bg-background pl-3.5 pr-10 py-2.5 text-sm text-foreground outline-none transition-all placeholder:text-muted-foreground focus:border-primary focus:ring-2 focus:ring-ring/20"
-              placeholder="••••••••"
               autoComplete={activeTab === "signin" ? "current-password" : "new-password"}
               required
             />

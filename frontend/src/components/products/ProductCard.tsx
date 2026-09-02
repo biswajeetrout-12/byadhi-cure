@@ -32,7 +32,7 @@ export default function ProductCard({ product }: { product: Product }) {
         <div className="mt-4 h-px bg-gradient-to-r from-border via-primary/20 to-transparent" />
 
         <Link
-          to={`/products/${product.id}`}
+          to={`/products/${product.slug || product.id}`}
           className="mt-4 inline-flex items-center gap-1.5 self-start text-sm font-semibold text-primary transition-all duration-200 hover:gap-2.5 group/link"
         >
           View Details

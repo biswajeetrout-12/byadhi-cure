@@ -3,12 +3,15 @@ import express from "express";
 import cors from "cors";
 
 import { connectDB } from "./config/db.js";
-import { seedAdmin } from "./seed/admin.seed.js";
+import { seedAdmin, seedSuperadmin } from "./seed/admin.seed.js";
 import { seedProducts } from "./seed/product.seed.js";
+import { seedCompany } from "./seed/company.seed.js";
 
 import authRoutes from "./routes/auth.routes.js";
 import productRoutes from "./routes/product.routes.js";
 import enquiryRoutes from "./routes/enquiry.routes.js";
+import sitemapRoutes from "./routes/sitemap.routes.js";
+import companyRoutes from "./routes/company.routes.js";
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -29,6 +32,8 @@ app.get("/api/health", (_req, res) => {
 app.use("/api/auth", authRoutes);
 app.use("/api/products", productRoutes);
 app.use("/api/enquiries", enquiryRoutes);
+app.use("/api/company", companyRoutes);
+app.use(sitemapRoutes);
 
 // ─── 404 handler ─────────────────────────────────────────────────────────────
 app.use((_req, res) => {
@@ -45,7 +50,9 @@ app.use((err, _req, res, _next) => {
 async function start() {
   await connectDB();
   await seedAdmin();
+  await seedSuperadmin();
   await seedProducts();
+  await seedCompany();
   app.listen(PORT, () => {
     console.log(`🚀 Server running on http://localhost:${PORT}`);
     console.log(`📋 API docs: http://localhost:${PORT}/api/health`);

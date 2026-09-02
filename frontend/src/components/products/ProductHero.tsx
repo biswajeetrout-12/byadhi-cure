@@ -9,7 +9,7 @@ export function ProductHero({ product }: ProductHeroProps) {
   return (
     <section className="relative overflow-hidden bg-secondary/30 border-b border-border py-12 md:py-16">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="grid gap-8 md:grid-cols-2 items-center">
+        <div className="grid gap-8 md:grid-cols-2 items-start">
           <div>
             <p className="eyebrow">{product.category}</p>
             <h1 className="mt-3 text-3xl font-bold tracking-tight text-foreground sm:text-4xl md:text-5xl">
@@ -19,11 +19,11 @@ export function ProductHero({ product }: ProductHeroProps) {
               {product.shortDescription}
             </p>
           </div>
-          <div className="overflow-hidden rounded-lg border border-border bg-background shadow-card max-h-[350px]">
+          <div className="aspect-[4/3] overflow-hidden rounded-lg border border-border bg-background shadow-card">
             <img
               src={product.image}
               alt={product.name}
-              className="w-full h-full object-cover"
+              className="h-full w-full object-contain p-3"
             />
           </div>
         </div>

@@ -6,15 +6,18 @@ import labImage from "@/assets/images/lab-quality.jpg";
 import { LinkButton } from "@/components/common/Button";
 import { Section, SectionHeading } from "@/components/common/Section";
 import ProductGrid from "@/components/products/ProductGrid";
-import { company, highlights } from "@/data/company";
+import { company as fallbackCompany, highlights } from "@/data/company";
 import { certifications } from "@/data/site";
 import { useProducts } from "@/hooks/useProducts";
 import Loader from "@/components/common/Loader";
+import { useCompany } from "@/hooks/useCompany";
 
 const icons = [Award, FlaskConical, ShieldCheck, Factory];
 
 export function Home() {
   const { data: productsList, isLoading } = useProducts();
+  const { data: companyFromDb } = useCompany();
+  const company = companyFromDb || fallbackCompany;
   const featured = productsList ? productsList.slice(0, 3) : [];
 
   return (

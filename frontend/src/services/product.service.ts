@@ -44,8 +44,8 @@ export const productService = {
     return res.data || [];
   },
 
-  getProductById: async (id: string): Promise<Product | undefined> => {
-    const res = await apiFetch<{ ok: boolean; data: Product }>(`/products/${id}`);
+  getProductBySlug: async (slug: string): Promise<Product | undefined> => {
+    const res = await apiFetch<{ ok: boolean; data: Product }>(`/products/slug/${encodeURIComponent(slug)}`);
     return res.data;
   },
 

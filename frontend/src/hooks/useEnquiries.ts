@@ -29,3 +29,11 @@ export function useUpdateEnquiryStatus() {
     },
   });
 }
+
+export function useDeleteEnquiry() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (id: string) => enquiryService.deleteEnquiry(id),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["enquiries"] }),
+  });
+}

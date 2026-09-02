@@ -1,17 +1,25 @@
 import React from "react";
-import { adminEnquiries, adminStats } from "@/data/site";
 import Loader from "@/components/common/Loader";
 import EmptyState from "@/components/common/EmptyState";
 import { useProducts } from "@/hooks/useProducts";
+import { useEnquiries } from "@/hooks/useEnquiries";
+import { useRegisteredUserCount } from "@/hooks/useAuth";
 
 export function Dashboard() {
   const { data: products, isLoading, isError } = useProducts();
+  const { data: enquiries } = useEnquiries();
+  const { data: registeredUserCount } = useRegisteredUserCount();
   const recentProducts = products?.slice(0, 5) ?? [];
+  const stats = [
+    { label: "Total products", value: products?.length ?? 0 },
+    { label: "Open enquiries", value: enquiries?.filter((enquiry) => enquiry.status !== "Closed").length ?? 0 },
+    { label: "Registered users", value: registeredUserCount ?? 0 },
+  ];
 
   return (
     <div className="space-y-6">
       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-        {adminStats.map((stat) => (
+        {stats.map((stat) => (
           <div key={stat.label} className="rounded-lg border border-border bg-card p-5 shadow-card">
             <p className="text-sm text-muted-foreground">{stat.label}</p>
             <p className="mt-2 font-display text-3xl font-bold text-primary">{stat.value}</p>
@@ -25,7 +33,7 @@ export function Dashboard() {
             <h2 className="font-display text-base font-bold text-card-foreground">Recent enquiries</h2>
           </div>
           <ul className="divide-y divide-border">
-            {adminEnquiries.map((enquiry) => (
+            {(enquiries || []).slice(0, 5).map((enquiry) => (
               <li key={enquiry.id} className="grid grid-cols-[minmax(0,1fr)_auto] gap-3 px-5 py-4">
                 <div className="min-w-0">
                   <p className="truncate text-sm font-medium text-card-foreground">{enquiry.subject}</p>
@@ -38,6 +46,7 @@ export function Dashboard() {
                 </span>
               </li>
             ))}
+            {!enquiries?.length ? <li className="px-5 py-6 text-sm text-muted-foreground">No enquiries yet.</li> : null}
           </ul>
         </div>
 

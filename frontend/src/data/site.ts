@@ -81,24 +81,3 @@ export const galleryItems: GalleryItem[] = [
   { id: "g11", title: "Annual distributor meet", category: "Events" },
   { id: "g12", title: "GMP training workshop", category: "Events" },
 ];
-
-export const adminStats = [
-  { label: "Total products", value: "6" },
-  { label: "Gallery images", value: "10" },
-  { label: "Open enquiries", value: "0" },
-  { label: "Registered users", value: "1" },
-];
-
-export const adminEnquiries = [
-  { id: "ENQ-1043", name: "Suresh Nair", company: "Medico Distributors", subject: "Bulk order — Cureflam-SP", date: "2026-08-04", status: "New" },
-  { id: "ENQ-1042", name: "Priya Sharma", company: "Sharma Pharmacy", subject: "Product brochure request", date: "2026-08-03", status: "In progress" },
-  { id: "ENQ-1041", name: "Arun Kumar", company: "LifeCare Hospitals", subject: "Third-party manufacturing", date: "2026-08-01", status: "Closed" },
-  { id: "ENQ-1040", name: "Neha Gupta", company: "Wellness Chain", subject: "Nutraceutical range pricing", date: "2026-07-29", status: "New" },
-];
-
-export const adminUsers = [
-  { id: "U-01", name: "Tuna Swain", email: "tuna@byadhicurelab.com", role: "Superadmin", status: "Active" },
-  { id: "U-02", name: "Kavita Rao", email: "kavita@byadhicurelab.com", role: "Admin", status: "Active" },
-  { id: "U-03", name: "Imran Sheikh", email: "imran@byadhicurelab.com", role: "Editor", status: "Active" },
-  { id: "U-04", name: "Medico Distributors", email: "orders@medico.in", role: "Customer", status: "Pending" },
-];

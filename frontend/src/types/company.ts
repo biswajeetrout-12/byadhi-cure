@@ -16,12 +16,12 @@ export interface CompanyInfo {
   shortName: string;
   tagline: string;
   intro: string;
+  aboutIntro: string;
   founded: number;
   address: Address;
   phone: string;
   altPhone: string;
   email: string;
-  salesEmail: string;
   workingHours: string;
   social: SocialLink[];
 }

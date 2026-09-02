@@ -1,18 +1,45 @@
-import React from "react";
-import { Plus } from "lucide-react";
+import React, { useState } from "react";
+import { Plus, X } from "lucide-react";
 import { Button } from "@/components/common/Button";
-import { adminUsers } from "@/data/site";
+import Modal from "@/components/common/Modal";
+import Loader from "@/components/common/Loader";
+import EmptyState from "@/components/common/EmptyState";
+import { useCreateAdminUser, useUsers } from "@/hooks/useAuth";
+
+const fieldClass = "mt-1.5 w-full rounded-md border border-input bg-background px-3 py-2 text-sm text-foreground outline-none focus:border-primary focus:ring-2 focus:ring-ring/25";
+const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
 export function Users() {
+  const { data: users, isLoading, isError } = useUsers();
+  const createAdminUser = useCreateAdminUser();
+  const [isOpen, setIsOpen] = useState(false);
+  const [form, setForm] = useState({ name: "", email: "", password: "" });
+  const [error, setError] = useState<string | null>(null);
+
+  const submit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+      setError(null);
+      if (!emailPattern.test(form.email.trim())) {
+        setError("Please enter a valid email address.");
+        return;
+      }
+    try {
+      await createAdminUser.mutateAsync(form);
+      setForm({ name: "", email: "", password: "" });
+      setIsOpen(false);
+    } catch (requestError) {
+      setError(requestError instanceof Error ? requestError.message : "Failed to create admin user");
+    }
+  };
+
   return (
     <div className="space-y-6">
       <div className="flex justify-end">
-        <Button>
+        <Button type="button" onClick={() => { setError(null); setIsOpen(true); }}>
           <Plus className="h-4 w-4" />
-          Add user
+          Add admin user
         </Button>
       </div>
-
       <div className="overflow-hidden rounded-lg border border-border bg-card shadow-card">
         <div className="overflow-x-auto">
           <table className="w-full min-w-[40rem] text-left text-sm">
@@ -25,7 +52,7 @@ export function Users() {
               </tr>
             </thead>
             <tbody className="divide-y divide-border">
-              {adminUsers.map((user) => (
+              {isLoading ? <tr><td colSpan={4}><Loader size="md" /></td></tr> : isError ? <tr><td colSpan={4}><EmptyState title="Unable to load users" description="The backend user list could not be loaded." /></td></tr> : users?.length === 0 ? <tr><td colSpan={4}><EmptyState title="No registered users" description="Users created through registration will appear here." /></td></tr> : users?.map((user) => (
                 <tr key={user.id}>
                   <td className="px-5 py-4 font-medium text-card-foreground">{user.name}</td>
                   <td className="px-5 py-4 text-muted-foreground">{user.email}</td>
@@ -41,6 +68,18 @@ export function Users() {
           </table>
         </div>
       </div>
+      <Modal isOpen={isOpen} onClose={() => setIsOpen(false)} title="Add admin user" className="max-w-md">
+        <form onSubmit={submit} className="space-y-4">
+          <label className="block text-sm font-medium text-card-foreground">Name<input required className={fieldClass} value={form.name} onChange={(event) => setForm({ ...form, name: event.target.value })} /></label>
+          <label className="block text-sm font-medium text-card-foreground">Email<input required type="email" pattern={emailPattern.source} className={fieldClass} value={form.email} onChange={(event) => setForm({ ...form, email: event.target.value })} /></label>
+          <label className="block text-sm font-medium text-card-foreground">Password<input required minLength={6} type="password" className={fieldClass} value={form.password} onChange={(event) => setForm({ ...form, password: event.target.value })} /></label>
+          {error ? <p className="text-sm text-destructive">{error}</p> : null}
+          <div className="flex justify-end gap-3">
+            <Button type="button" variant="outline" onClick={() => setIsOpen(false)}><X className="h-4 w-4" />Cancel</Button>
+            <Button type="submit" disabled={createAdminUser.isPending}>{createAdminUser.isPending ? "Creating..." : "Create admin"}</Button>
+          </div>
+        </form>
+      </Modal>
     </div>
   );
 }

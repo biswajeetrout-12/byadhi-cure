@@ -1,27 +1,23 @@
-/**
- * Temporary dummy company data.
- * Replace with backend API response (see src/services/api.ts).
- */
-
 export const company = {
   name: "Byadhi Cure Lab Private Limited",
   shortName: "Byadhi Cure Lab",
   tagline: "Trusted pharmaceutical manufacturing for a healthier tomorrow",
   intro:
-    "Byadhi Cure Lab Private Limited is a top pharmaceutical company, handling a variety of cardiovascular, diabetic, and hypertension medications. Being an ISO-certified company that strives to eradicate cardiovascular and diabetic problems",
+    "Byadhi Cure Lab Private Limited is a leading pharmaceutical company offering a diverse range of medications across neurological, orthopedic, cardiovascular, diabetic, and hypertension care. As an ISO-certified company, we are committed to delivering quality pharmaceutical solutions, with a particular focus on advancing neurological and orthopedic healthcare while addressing cardiovascular and diabetic health challenges.",
+  aboutIntro:
+    "Byadhi Cure Lab Private Limited was established to build a dependable pharmaceutical manufacturing partner for healthcare businesses and patients. From raw-material qualification and controlled dispensing through manufacturing, testing, packing and release, our teams follow documented processes designed to protect product quality and traceability.",
   founded: 2023,
   address: {
     line1: "Plot 1537/2418, Phase II",
     line2: "Bhagabanpur",
     city: "Bhubaneswar, Odisha",
-    postalCode: "751023",
+    postalCode: "751003",
     country: "India",
   },
-  phone: "+91 98765 43210",
-  altPhone: "+91 98765 43211",
+  phone: "+91 8763737274",
+  altPhone: "+91 7205960325",
   email: "info@byadhicurelab.com",
-  salesEmail: "sales@byadhicurelab.com",
-  workingHours: "Monday – Saturday, 9:30 AM – 6:30 PM IST",
+  workingHours: "Monday – Saturday, 8:00 AM – 11:00 PM IST",
   social: [
     { label: "LinkedIn", href: "#" },
     { label: "Facebook", href: "#" },
@@ -32,8 +28,8 @@ export const company = {
 
 export const highlights = [
   { value: "3+", label: "Years of experience", detail: "Serving healthcare since 2023" },
-  { value: "6+", label: "Products", detail: "Tablets, capsules, syrups & injectables" },
-  { value: "WHO-GMP", label: "Quality standards", detail: "ISO 9001:2015 certified facility" },
+  { value: "16+", label: "Products", detail: "Tablets, capsules, syrups & injectables" },
+  { value: "WHO-GMP", label: "Quality standards", detail: "ISO 9001:2023 certified facility" },
   { value: "8", label: "Production lines", detail: "2 million units monthly capacity" },
 ];
 

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import { Download, MessageSquare, FlaskConical, Zap, Package, Thermometer, Factory, BookOpen } from "lucide-react";
 import { Button, LinkButton } from "@/components/common/Button";
@@ -6,6 +6,7 @@ import { Section, SectionHeading } from "@/components/common/Section";
 import ProductGrid from "@/components/products/ProductGrid";
 import Loader from "@/components/common/Loader";
 import { useProduct, useProducts } from "@/hooks/useProducts";
+import { createProductBrochure } from "@/lib/productBrochure";
 
 function ProductNotFound() {
   return (
@@ -115,9 +116,51 @@ function List({ items }: { items: string[] }) {
 }
 
 export function ProductDetails() {
-  const { id } = useParams<{ id: string }>();
-  const { data: product, isLoading, isError } = useProduct(id || "");
+  const { slug } = useParams<{ slug: string }>();
+  const { data: product, isLoading, isError } = useProduct(slug || "");
   const { data: allProducts } = useProducts();
+
+  useEffect(() => {
+    if (!product) return undefined;
+
+    const siteUrl = (import.meta.env["VITE_SITE_URL"] || window.location.origin).replace(/\/$/, "");
+    const canonicalUrl = `${siteUrl}/products/${product.slug || slug}`;
+    const description = product.shortDescription || product.description;
+    const previousTitle = document.title;
+    const previousDescription = document.querySelector('meta[name="description"]')?.getAttribute("content") ?? undefined;
+    const previousCanonical = document.querySelector('link[rel="canonical"]')?.getAttribute("href") ?? undefined;
+    const descriptionTag = document.querySelector('meta[name="description"]') || document.createElement("meta");
+    descriptionTag.setAttribute("name", "description");
+    descriptionTag.setAttribute("content", description);
+    document.head.appendChild(descriptionTag);
+    const canonicalTag = document.querySelector('link[rel="canonical"]') || document.createElement("link");
+    canonicalTag.setAttribute("rel", "canonical");
+    canonicalTag.setAttribute("href", canonicalUrl);
+    document.head.appendChild(canonicalTag);
+    document.title = `${product.name} | Byadhi Cure Lab`;
+
+    const structuredData = document.createElement("script");
+    structuredData.type = "application/ld+json";
+    structuredData.id = "product-structured-data";
+    structuredData.textContent = JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "Product",
+      name: product.name,
+      ...(product.image ? { image: [product.image] } : {}),
+      description,
+    }).replace(/</g, "\\u003c");
+    document.getElementById("product-structured-data")?.remove();
+    document.head.appendChild(structuredData);
+
+    return () => {
+      document.title = previousTitle;
+      if (previousDescription === undefined) descriptionTag.remove();
+      else descriptionTag.setAttribute("content", previousDescription);
+      if (previousCanonical === undefined) canonicalTag.remove();
+      else canonicalTag.setAttribute("href", previousCanonical);
+      structuredData.remove();
+    };
+  }, [product, slug]);
 
   if (isLoading) {
     return (
@@ -135,6 +178,15 @@ export function ProductDetails() {
     ? allProducts.filter((p) => p.id !== product.id).slice(0, 3)
     : [];
 
+  const downloadBrochure = () => {
+    const url = URL.createObjectURL(createProductBrochure(product));
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = `${product.slug || "product"}-brochure.pdf`;
+    link.click();
+    URL.revokeObjectURL(url);
+  };
+
   return (
     <>
       <Section>
@@ -148,15 +200,15 @@ export function ProductDetails() {
         </nav>
 
         {/* Hero grid */}
-        <div className="grid gap-10 lg:grid-cols-2">
+        <div className="grid gap-10 lg:grid-cols-2 lg:items-start">
           {/* Image */}
-          <div className="overflow-hidden rounded-2xl border border-border/60 bg-gradient-to-br from-primary/5 to-accent/5 shadow-raised">
+          <div className="self-start overflow-hidden rounded-2xl border border-border/60 bg-gradient-to-br from-primary/5 to-accent/5 shadow-raised">
             <img
               src={product.image}
               alt={product.name}
               width={1000}
               height={800}
-              className="h-full w-full object-cover"
+              className="h-auto w-full object-contain"
             />
           </div>
 
@@ -179,7 +231,7 @@ export function ProductDetails() {
 
             {/* CTA buttons */}
             <div className="mt-7 flex flex-wrap gap-3">
-              <Button>
+              <Button type="button" onClick={downloadBrochure}>
                 <Download className="h-4 w-4" />
                 Download Brochure
               </Button>

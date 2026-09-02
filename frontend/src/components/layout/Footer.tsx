@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { Mail, MapPin, Phone, FlaskConical, Linkedin, Twitter, Facebook, Instagram } from "lucide-react";
 import { company } from "@/data/company";
+import { useCompany } from "@/hooks/useCompany";
 
 const quickLinks = [
   { label: "Home", to: "/" },
@@ -18,6 +19,9 @@ const socialIcons: Record<string, React.ReactNode> = {
 };
 
 export default function Footer() {
+  const { data: companyFromDb } = useCompany();
+  const activeCompany = companyFromDb || company;
+
   return (
     <footer
       style={{
@@ -59,17 +63,17 @@ export default function Footer() {
                 backgroundClip: "text",
               }}
             >
-              {company.name}
+              {activeCompany.name}
             </h3>
           </div>
 
           <p style={{ fontSize: "0.875rem", lineHeight: "1.75", color: "#94a3b8", maxWidth: "28rem" }}>
-            {company.intro}
+            {activeCompany.intro}
           </p>
 
           {/* Social links */}
           <div className="mt-6 flex flex-wrap gap-3">
-            {company.social.map((item) => (
+            {activeCompany.social.map((item) => (
               <a
                 key={item.label}
                 href={item.href}
@@ -165,31 +169,31 @@ export default function Footer() {
             <li style={{ display: "flex", gap: "10px", fontSize: "0.875rem", color: "#94a3b8" }}>
               <MapPin style={{ marginTop: "2px", height: "16px", width: "16px", flexShrink: 0, color: "#2dd4bf" }} />
               <span>
-                {company.address.line1}, {company.address.line2}
+                {activeCompany.address.line1}, {activeCompany.address.line2}
                 <br />
-                {company.address.city} {company.address.postalCode}
+                {activeCompany.address.city} {activeCompany.address.postalCode}
               </span>
             </li>
             <li style={{ display: "flex", gap: "10px", fontSize: "0.875rem", color: "#94a3b8" }}>
               <Phone style={{ marginTop: "2px", height: "16px", width: "16px", flexShrink: 0, color: "#2dd4bf" }} />
               <a
-                href={`tel:${company.phone}`}
+                href={`tel:${activeCompany.phone}`}
                 style={{ color: "inherit", textDecoration: "none", transition: "color 0.2s" }}
                 onMouseEnter={(e) => { e.currentTarget.style.color = "#2dd4bf"; }}
                 onMouseLeave={(e) => { e.currentTarget.style.color = "#94a3b8"; }}
               >
-                {company.phone}
+                {activeCompany.phone}
               </a>
             </li>
             <li style={{ display: "flex", gap: "10px", fontSize: "0.875rem", color: "#94a3b8" }}>
               <Mail style={{ marginTop: "2px", height: "16px", width: "16px", flexShrink: 0, color: "#2dd4bf" }} />
               <a
-                href={`mailto:${company.email}`}
+                href={`mailto:${activeCompany.email}`}
                 style={{ color: "inherit", textDecoration: "none", wordBreak: "break-all", transition: "color 0.2s" }}
                 onMouseEnter={(e) => { e.currentTarget.style.color = "#2dd4bf"; }}
                 onMouseLeave={(e) => { e.currentTarget.style.color = "#94a3b8"; }}
               >
-                {company.email}
+                {activeCompany.email}
               </a>
             </li>
           </ul>
@@ -220,7 +224,7 @@ export default function Footer() {
           className="mx-auto flex max-w-7xl flex-col gap-2 px-4 py-5 sm:flex-row sm:items-center sm:justify-between sm:px-6 lg:px-8"
           style={{ fontSize: "0.75rem", color: "#64748b" }}
         >
-          <p>© {new Date().getFullYear()} {company.name}. All rights reserved.</p>
+          <p>© {new Date().getFullYear()} {activeCompany.name}. All rights reserved.</p>
           <p>Manufactured under WHO-GMP guidelines. For registered healthcare partners.</p>
         </div>
       </div>

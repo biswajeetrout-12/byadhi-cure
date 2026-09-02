@@ -1,4 +1,5 @@
 import React, { ReactNode, useEffect } from "react";
+import { createPortal } from "react-dom";
 import { X } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -29,7 +30,8 @@ export function Modal({ isOpen, onClose, title, children, className }: ModalProp
 
   if (!isOpen) return null;
 
-  return (
+  return createPortal(
+    (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
       {/* Backdrop */}
       <div className="fixed inset-0 bg-foreground/40 backdrop-blur-sm" onClick={onClose} />
@@ -55,6 +57,8 @@ export function Modal({ isOpen, onClose, title, children, className }: ModalProp
         <div className="mt-4 max-h-[75vh] overflow-y-auto">{children}</div>
       </div>
     </div>
+    ),
+    document.body,
   );
 }
 

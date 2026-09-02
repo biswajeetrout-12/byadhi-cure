@@ -4,6 +4,7 @@ import { Menu, X } from "lucide-react";
 import { company } from "@/data/company";
 import { LinkButton } from "./Button";
 import { cn } from "@/lib/utils";
+import { useCompany } from "@/hooks/useCompany";
 import logo from "@/assets/logos/logo.png";
 
 const navItems = [
@@ -26,6 +27,8 @@ function Logo() {
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
+  const { data: companyFromDb } = useCompany();
+  const activeCompany = companyFromDb || company;
 
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "";
@@ -44,7 +47,7 @@ export default function Navbar() {
           <Logo />
           <span className="min-w-0">
             <span className="block truncate font-display text-base font-bold leading-tight text-foreground sm:text-lg">
-              {company.shortName}
+              {activeCompany.shortName}
             </span>
             <span className="block truncate text-[11px] uppercase tracking-[0.18em] text-muted-foreground">
               Private Limited

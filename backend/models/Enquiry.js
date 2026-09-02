@@ -9,6 +9,7 @@ const enquirySchema = new mongoose.Schema(
     subject: { type: String, required: true },
     message: { type: String, required: true },
     productId: { type: String, default: "" },
+    userId: { type: String, default: "" },
     status: {
       type: String,
       enum: ["New", "In progress", "Closed"],

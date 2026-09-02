@@ -1,15 +1,17 @@
 import React from "react";
-import directorImage from "@/assets/images/director.jpg";
 import { PageHeader, Section, SectionHeading } from "@/components/common/Section";
-import { company, director, infrastructure, mission, timeline, values, vision } from "@/data/company";
+import { director, infrastructure, mission, timeline, values, vision } from "@/data/company";
+import { useCompany } from "@/hooks/useCompany";
 
 export function About() {
+  const { data: companyInfo } = useCompany();
+
   return (
     <>
       <PageHeader
         eyebrow="About us"
         title="A pharmaceutical company built around quality"
-        description={company.intro}
+        description={companyInfo?.aboutIntro || "Loading company information..."}
       />
 
       <Section>
@@ -39,21 +41,15 @@ export function About() {
 
       <Section muted>
         <SectionHeading eyebrow="Leadership" title="A message from our Director" />
-        <div className="mt-10 grid gap-0 overflow-hidden rounded-lg border border-border bg-card shadow-card md:grid-cols-[minmax(0,20rem)_minmax(0,1fr)]">
-          <img
-            src={directorImage}
-            alt={`${director.name}, ${director.designation}`}
-            loading="lazy"
-            width={900}
-            height={1100}
-            className="h-full w-full object-cover"
-          />
+        <div className="mt-10 overflow-hidden rounded-lg border border-border bg-card shadow-card">
           <div className="p-7 md:p-10">
             <h3 className="font-display text-2xl font-bold text-card-foreground">{director.name}</h3>
-            <p className="mt-1 text-sm font-semibold uppercase tracking-[0.14em] text-accent">{director.designation}</p>
+            <p className="mt-1 text-sm font-semibold uppercase tracking-[0.14em] text-accent">
+              {director.designation}
+            </p>
             <p className="mt-5 leading-relaxed text-muted-foreground">{director.bio}</p>
             <blockquote className="mt-6 border-l-2 border-accent pl-5 font-display text-lg italic leading-relaxed text-card-foreground">
-              “{director.message}”
+              "{director.message}"
             </blockquote>
           </div>
         </div>

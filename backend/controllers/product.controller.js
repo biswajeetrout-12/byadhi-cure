@@ -1,9 +1,11 @@
+import mongoose from "mongoose";
 import Product from "../models/Product.js";
 import {
   deleteProductImage,
   extractCloudinaryPublicId,
   uploadProductImage,
 } from "../services/cloudinary.service.js";
+import { getUniqueProductSlug } from "../utils/slug.js";
 
 function serializeProduct(product) {
   return { ...product.toObject(), id: product._id.toString() };
@@ -27,11 +29,11 @@ function parseListField(value) {
       return parsed.map((item) => String(item).trim()).filter(Boolean);
     }
   } catch {
-    // Allow newline/comma separated values from form submissions.
+    // Fall back to line-based parsing for textarea submissions.
   }
 
   return text
-    .split(/[\n,]/)
+    .split(/\r?\n+/)
     .map((item) => item.trim())
     .filter(Boolean);
 }
@@ -129,6 +131,19 @@ export async function getProductById(req, res) {
   }
 }
 
+// GET /api/products/slug/:slug
+export async function getProductBySlug(req, res) {
+  try {
+    const product = await Product.findOne({ slug: req.params.slug }) || (
+      mongoose.isValidObjectId(req.params.slug) ? await Product.findById(req.params.slug) : null
+    );
+    if (!product) return res.status(404).json({ ok: false, message: "Product not found" });
+    return res.json({ ok: true, data: serializeProduct(product) });
+  } catch (err) {
+    return res.status(500).json({ ok: false, message: "Failed to fetch product" });
+  }
+}
+
 // POST /api/products  [admin only]
 export async function createProduct(req, res) {
   try {
@@ -144,6 +159,7 @@ export async function createProduct(req, res) {
 
     const product = await Product.create({
       ...productData,
+      slug: await getUniqueProductSlug(productData.name),
       image: imageData.image,
       imagePublicId: imageData.imagePublicId,
     });
@@ -162,6 +178,9 @@ export async function updateProduct(req, res) {
     if (!product) return res.status(404).json({ ok: false, message: "Product not found" });
 
     const productData = buildProductData(req.body, product);
+    const slug = product.slug && productData.name === product.name
+      ? product.slug
+      : await getUniqueProductSlug(productData.name, product._id);
     const imageData = await resolveImageData(req, product, false);
     const previousPublicId = imageData.previousPublicId;
 
@@ -169,6 +188,7 @@ export async function updateProduct(req, res) {
       req.params.id,
       {
         ...productData,
+        slug,
         image: imageData.image,
         imagePublicId: imageData.imagePublicId,
       },

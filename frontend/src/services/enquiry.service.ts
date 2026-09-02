@@ -22,4 +22,9 @@ export const enquiryService = {
     });
     return res.data;
   },
+
+  deleteEnquiry: async (id: string): Promise<boolean> => {
+    await apiFetch(`/enquiries/${id}`, { method: "DELETE" });
+    return true;
+  },
 };

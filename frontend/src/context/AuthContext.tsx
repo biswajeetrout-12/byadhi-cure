@@ -1,11 +1,12 @@
 import React, { createContext, useContext, ReactNode, useEffect } from "react";
-import { useAuthUser, useLogin, useLogout, useRegister } from "@/hooks/useAuth";
+import { useAuthUser, useGoogleLogin, useLogin, useLogout, useRegister } from "@/hooks/useAuth";
 import { User } from "@/types/user";
 
 interface AuthContextType {
   user: User | null;
   isLoading: boolean;
   login: (payload: Parameters<ReturnType<typeof useLogin>["mutate"]>[0]) => Promise<any>;
+  googleLogin: (credential: string) => Promise<any>;
   register: (payload: Parameters<ReturnType<typeof useRegister>["mutate"]>[0]) => Promise<any>;
   logout: () => void;
   isAuthenticated: boolean;
@@ -16,6 +17,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export function AuthProvider({ children }: { children: ReactNode }) {
   const { data: user, isLoading, refetch } = useAuthUser();
   const loginMutation = useLogin();
+  const googleLoginMutation = useGoogleLogin();
   const registerMutation = useRegister();
   const logoutMutation = useLogout();
 
@@ -49,6 +51,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     });
   };
 
+  const googleLogin = async (credential: string) => {
+    const data = await googleLoginMutation.mutateAsync(credential);
+    await refetch();
+    return data;
+  };
+
   const logout = () => {
     logoutMutation.mutate();
   };
@@ -59,6 +67,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         user: user || null,
         isLoading,
         login,
+        googleLogin,
         register,
         logout,
         isAuthenticated: !!user,

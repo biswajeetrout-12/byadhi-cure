@@ -27,12 +27,12 @@ export async function requireAuth(req, res, next) {
 }
 
 /**
- * requireAdmin — must be used after requireAuth
- * Allows only users with role === "admin"
+ * requireAdmin — must be used after requireAuth.
+ * Allows both administrator roles into the admin application.
  */
 export function requireAdmin(req, res, next) {
   const role = typeof req.user?.role === "string" ? req.user.role.toLowerCase() : "";
-  if (!req.user || role !== "admin") {
+  if (!req.user || !["admin", "superadmin"].includes(role)) {
     return res.status(403).json({ ok: false, message: "Admin access required" });
   }
   next();

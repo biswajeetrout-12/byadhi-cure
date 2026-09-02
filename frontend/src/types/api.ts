@@ -17,8 +17,12 @@ export interface EnquiryPayload {
 export interface Enquiry {
   id: string;
   name: string;
+  email?: string;
+  phone?: string;
   company?: string;
   subject: string;
+  message?: string;
+  productId?: string;
   date: string;
   status: "New" | "In progress" | "Closed";
 }

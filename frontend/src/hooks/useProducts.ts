@@ -9,11 +9,11 @@ export function useProducts() {
   });
 }
 
-export function useProduct(id: string) {
+export function useProduct(slug: string) {
   return useQuery({
-    queryKey: ["product", id],
-    queryFn: () => productService.getProductById(id),
-    enabled: !!id,
+    queryKey: ["product", slug],
+    queryFn: () => productService.getProductBySlug(slug),
+    enabled: !!slug,
   });
 }
 

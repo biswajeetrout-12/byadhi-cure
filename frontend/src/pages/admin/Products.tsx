@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Pencil, Plus, Search, Trash2, X } from "lucide-react";
 import { Button } from "@/components/common/Button";
+import Modal from "@/components/common/Modal";
 import Loader from "@/components/common/Loader";
 import EmptyState from "@/components/common/EmptyState";
 import { useCreateProduct, useDeleteProduct, useProducts as useProductList, useUpdateProduct } from "@/hooks/useProducts";
@@ -149,7 +150,13 @@ function ProductForm({
           <div className="md:col-span-2">
             <p className="text-sm font-medium text-card-foreground">Image preview</p>
             <div className="mt-2 overflow-hidden rounded-lg border border-border bg-secondary/30">
-              <img src={preview} alt="Product preview" className="h-44 w-full object-cover" />
+              <div className="aspect-[4/3] w-full">
+                <img
+                  src={preview}
+                  alt="Product preview"
+                  className="h-full w-full object-contain p-3"
+                />
+              </div>
             </div>
           </div>
         ) : null}
@@ -260,6 +267,7 @@ export function Products() {
   const [query, setQuery] = useState("");
   const [showForm, setShowForm] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+  const [productToDelete, setProductToDelete] = useState<Product | null>(null);
   const [formError, setFormError] = useState<string | null>(null);
   const { data: products, isLoading, isError } = useProductList();
   const createProduct = useCreateProduct();
@@ -310,12 +318,16 @@ export function Products() {
     }
   };
 
-  const handleDelete = async (product: Product) => {
-    const confirmed = window.confirm(`Delete ${product.name}? This will remove the backend product and its Cloudinary image.`);
-    if (!confirmed) return;
+  const handleDelete = (product: Product) => {
+    setProductToDelete(product);
+  };
+
+  const confirmDelete = async () => {
+    if (!productToDelete) return;
 
     try {
-      await deleteProduct.mutateAsync(product.id);
+      await deleteProduct.mutateAsync(productToDelete.id);
+      setProductToDelete(null);
     } catch (error) {
       setFormError(error instanceof Error ? error.message : "Failed to delete product");
     }
@@ -422,6 +434,39 @@ export function Products() {
           </table>
         </div>
       </div>
+
+      <Modal
+        isOpen={!!productToDelete}
+        onClose={() => setProductToDelete(null)}
+        title="Confirm Product Deletion"
+        className="max-w-md"
+      >
+        <div className="space-y-5">
+          <p className="text-sm leading-6 text-muted-foreground">
+            Are you sure you want to delete <span className="font-semibold text-foreground">{productToDelete?.name}</span>? This will remove the product and its image permanently.
+          </p>
+          <div className="flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              onClick={() => setProductToDelete(null)}
+              disabled={deleteProduct.isPending}
+            >
+              Cancel
+            </Button>
+            <Button
+              type="button"
+              size="sm"
+              onClick={confirmDelete}
+              disabled={deleteProduct.isPending}
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/85"
+            >
+              {deleteProduct.isPending ? "Deleting..." : "Delete Product"}
+            </Button>
+          </div>
+        </div>
+      </Modal>
     </div>
   );
 }

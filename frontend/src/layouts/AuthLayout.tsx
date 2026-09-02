@@ -1,9 +1,13 @@
 import { Link, Outlet } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
 import { company } from "@/data/company";
+import { useCompany } from "@/hooks/useCompany";
 import logo from "@/assets/logos/logo.png";
 
 export function AuthLayout() {
+  const { data: companyFromDb } = useCompany();
+  const activeCompany = companyFromDb || company;
+
   return (
     <div className="relative min-h-screen flex flex-col justify-center items-center py-12 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-primary/5 via-background to-accent/5 overflow-hidden">
       {/* Background patterns */}
@@ -36,7 +40,7 @@ export function AuthLayout() {
             />
             <div className="text-left">
               <span className="block font-display text-base font-bold leading-tight text-foreground">
-                {company.shortName}
+                {activeCompany.shortName}
               </span>
               <span className="block text-[10px] uppercase tracking-[0.18em] text-muted-foreground">
                 Private Limited
