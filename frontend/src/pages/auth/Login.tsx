@@ -266,24 +266,6 @@ export function Login() {
           {isSubmitting ? "Processing..." : activeTab === "signin" ? "Sign In" : "Create Account"}
         </Button>
       </form>
-
-      {/* Helper text footer */}
-      <p className="mt-6 border-t border-border/80 pt-5 text-[11px] text-muted-foreground text-center leading-relaxed">
-        {activeTab === "signin" ? (
-          <>
-            Administrator credentials seeded:{" "}
-            <code className="bg-muted px-1.5 py-0.5 rounded text-foreground font-mono font-bold">
-              {import.meta.env['VITE_ADMIN_EMAIL'] || ""}
-            </code>{" "}
-            / Password:{" "}
-            <code className="bg-muted px-1.5 py-0.5 rounded text-foreground font-mono font-bold">
-              {import.meta.env['VITE_ADMIN_PASSWORD'] || ""}
-            </code>
-          </>
-        ) : (
-          "Self-registered partner accounts default to client-level verification."
-        )}
-      </p>
     </div>
   );
 }
