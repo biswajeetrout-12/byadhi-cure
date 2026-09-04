@@ -11,7 +11,12 @@ function escapeXml(value) {
 
 export async function getSitemap(req, res) {
   try {
-    const siteUrl = (process.env.SITE_URL || process.env.FRONTEND_URL || "http://localhost:5173").replace(/\/$/, "");
+    const siteUrl = process.env.SITE_URL?.replace(/\/$/, "");
+
+    if (!siteUrl) {
+      return res.status(500).type("text/plain").send("SITE_URL is not configured");
+    }
+
     const products = await Product.find({ slug: { $exists: true, $ne: "" } }, { slug: 1, updatedAt: 1 }).lean();
     const urls = [
       `${siteUrl}/`,
