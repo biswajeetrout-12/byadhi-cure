@@ -17,6 +17,8 @@ export interface CompanyInfo {
   tagline: string;
   intro: string;
   aboutIntro: string;
+  seoTitle?: string;
+  seoDescription?: string;
   founded: number;
   address: Address;
   phone: string;

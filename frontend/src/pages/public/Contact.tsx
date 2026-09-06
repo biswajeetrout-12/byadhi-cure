@@ -7,6 +7,7 @@ import { useAuth } from "@/context/AuthContext";
 import { useCompany } from "@/hooks/useCompany";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
+import PageMetadata from "@/components/layout/PageMetadata";
 
 const fieldClass =
   "mt-1.5 w-full rounded-md border border-input bg-background px-3.5 py-2.5 text-sm text-foreground outline-none transition-colors placeholder:text-muted-foreground focus:border-primary focus:ring-2 focus:ring-ring/25";
@@ -83,6 +84,11 @@ export function Contact() {
 
   return (
     <>
+      <PageMetadata
+        title={`Contact | ${companyInfo?.name || "Byadhi Cure Lab Private Limited"}`}
+        description="Contact Byadhi Cure Lab Private Limited for pharmaceutical products, distribution partnerships and manufacturing enquiries."
+        path="/contact"
+      />
       <PageHeader
         eyebrow="Contact us"
         title="Talk to our team"

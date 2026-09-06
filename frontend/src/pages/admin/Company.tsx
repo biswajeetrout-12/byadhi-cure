@@ -13,6 +13,8 @@ type CompanyForm = {
   name: string;
   intro: string;
   aboutIntro: string;
+  seoTitle: string;
+  seoDescription: string;
   phone: string;
   altPhone: string;
   email: string;
@@ -25,13 +27,13 @@ type CompanyForm = {
 };
 
 const emptyForm: CompanyForm = {
-  name: "", intro: "", aboutIntro: "", phone: "", altPhone: "", email: "", workingHours: "",
+  name: "", intro: "", aboutIntro: "", seoTitle: "", seoDescription: "", phone: "", altPhone: "", email: "", workingHours: "",
   addressLine1: "", addressLine2: "", city: "", postalCode: "", country: "",
 };
 
 function toForm(company: CompanyInfo): CompanyForm {
   return {
-    name: company.name, intro: company.intro, aboutIntro: company.aboutIntro || "", phone: company.phone,
+    name: company.name, intro: company.intro, aboutIntro: company.aboutIntro || "", seoTitle: company.seoTitle || "", seoDescription: company.seoDescription || "", phone: company.phone,
     altPhone: company.altPhone, email: company.email, workingHours: company.workingHours,
     addressLine1: company.address.line1, addressLine2: company.address.line2, city: company.address.city,
     postalCode: company.address.postalCode, country: company.address.country,
@@ -64,6 +66,8 @@ export function Company() {
         name: values.name,
         intro: values.intro,
         aboutIntro: values.aboutIntro,
+        seoTitle: values.seoTitle,
+        seoDescription: values.seoDescription,
         phone: values.phone,
         altPhone: values.altPhone,
         email: values.email,
@@ -95,6 +99,8 @@ export function Company() {
         <label className="text-sm font-medium text-card-foreground md:col-span-2">Company name<input className={fieldClass} value={values.name} onChange={(event) => updateField("name", event.target.value)} /></label>
         <label className="text-sm font-medium text-card-foreground md:col-span-2">Home introduction<textarea rows={4} className={fieldClass} value={values.intro} onChange={(event) => updateField("intro", event.target.value)} /></label>
         <label className="text-sm font-medium text-card-foreground md:col-span-2">About introduction<textarea rows={6} className={fieldClass} value={values.aboutIntro} onChange={(event) => updateField("aboutIntro", event.target.value)} /></label>
+        <label className="text-sm font-medium text-card-foreground">SEO title (optional)<input className={fieldClass} maxLength={160} value={values.seoTitle} onChange={(event) => updateField("seoTitle", event.target.value)} /></label>
+        <label className="text-sm font-medium text-card-foreground">SEO description (optional)<textarea rows={2} maxLength={320} className={fieldClass} value={values.seoDescription} onChange={(event) => updateField("seoDescription", event.target.value)} /></label>
         <label className="text-sm font-medium text-card-foreground">Phone<input className={fieldClass} value={values.phone} onChange={(event) => updateField("phone", event.target.value)} /></label>
         <label className="text-sm font-medium text-card-foreground">Alternative phone<input className={fieldClass} value={values.altPhone} onChange={(event) => updateField("altPhone", event.target.value)} /></label>
         <label className="text-sm font-medium text-card-foreground">Email<input className={fieldClass} value={values.email} onChange={(event) => updateField("email", event.target.value)} /></label>

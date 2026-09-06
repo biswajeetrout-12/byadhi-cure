@@ -18,6 +18,8 @@ const EMPTY_FORM: ProductFormValues = {
   category: "",
   shortDescription: "",
   description: "",
+  seoTitle: "",
+  seoDescription: "",
   composition: "",
   uses: "",
   benefits: "",
@@ -38,6 +40,8 @@ function productToFormValues(product: Product | null): ProductFormValues {
     category: product.category,
     shortDescription: product.shortDescription,
     description: product.description,
+    seoTitle: product.seoTitle || "",
+    seoDescription: product.seoDescription || "",
     composition: product.composition.join("\n"),
     uses: product.uses.join("\n"),
     benefits: product.benefits.join("\n"),
@@ -179,6 +183,14 @@ function ProductForm({
             value={values.description}
             onChange={(event) => updateField("description", event.target.value)}
           />
+        </label>
+        <label className="text-sm font-medium text-card-foreground">
+          SEO title (optional)
+          <input maxLength={160} className={fieldClass} placeholder="Defaults to product name" value={values.seoTitle} onChange={(event) => updateField("seoTitle", event.target.value)} />
+        </label>
+        <label className="text-sm font-medium text-card-foreground">
+          SEO description (optional)
+          <textarea rows={2} maxLength={320} className={fieldClass} placeholder="Defaults to the short description" value={values.seoDescription} onChange={(event) => updateField("seoDescription", event.target.value)} />
         </label>
         <label className="text-sm font-medium text-card-foreground">
           Composition

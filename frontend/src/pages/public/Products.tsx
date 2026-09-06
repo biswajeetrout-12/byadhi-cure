@@ -4,12 +4,18 @@ import ProductGrid from "@/components/products/ProductGrid";
 import Loader from "@/components/common/Loader";
 import EmptyState from "@/components/common/EmptyState";
 import { useProducts } from "@/hooks/useProducts";
+import PageMetadata from "@/components/layout/PageMetadata";
 
 export function Products() {
   const { data: productsList, isLoading, isError } = useProducts();
 
   return (
     <>
+      <PageMetadata
+        title="Pharmaceutical Products | Byadhi Cure Lab"
+        description="Browse pharmaceutical and nutritional healthcare products from Byadhi Cure Lab Private Limited."
+        path="/products"
+      />
       <PageHeader
         eyebrow="Our products"
         title="Product range"

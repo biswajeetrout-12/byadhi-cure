@@ -8,6 +8,7 @@ import { useCreateAdminUser, useUsers } from "@/hooks/useAuth";
 
 const fieldClass = "mt-1.5 w-full rounded-md border border-input bg-background px-3 py-2 text-sm text-foreground outline-none focus:border-primary focus:ring-2 focus:ring-ring/25";
 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+const passwordPattern = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
 
 export function Users() {
   const { data: users, isLoading, isError } = useUsers();
@@ -21,6 +22,10 @@ export function Users() {
       setError(null);
       if (!emailPattern.test(form.email.trim())) {
         setError("Please enter a valid email address.");
+        return;
+      }
+      if (!passwordPattern.test(form.password)) {
+        setError("Password must be at least 8 characters and contain only letters and numbers, including both.");
         return;
       }
     try {
@@ -72,7 +77,7 @@ export function Users() {
         <form onSubmit={submit} className="space-y-4">
           <label className="block text-sm font-medium text-card-foreground">Name<input required className={fieldClass} value={form.name} onChange={(event) => setForm({ ...form, name: event.target.value })} /></label>
           <label className="block text-sm font-medium text-card-foreground">Email<input required type="email" pattern={emailPattern.source} className={fieldClass} value={form.email} onChange={(event) => setForm({ ...form, email: event.target.value })} /></label>
-          <label className="block text-sm font-medium text-card-foreground">Password<input required minLength={6} type="password" className={fieldClass} value={form.password} onChange={(event) => setForm({ ...form, password: event.target.value })} /></label>
+          <label className="block text-sm font-medium text-card-foreground">Password<input required minLength={8} pattern={passwordPattern.source} type="password" className={fieldClass} value={form.password} onChange={(event) => setForm({ ...form, password: event.target.value })} /></label>
           {error ? <p className="text-sm text-destructive">{error}</p> : null}
           <div className="flex justify-end gap-3">
             <Button type="button" variant="outline" onClick={() => setIsOpen(false)}><X className="h-4 w-4" />Cancel</Button>

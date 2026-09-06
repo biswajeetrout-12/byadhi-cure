@@ -2,12 +2,16 @@ import React from "react";
 import { PageHeader, Section, SectionHeading } from "@/components/common/Section";
 import { director, infrastructure, mission, timeline, values, vision } from "@/data/company";
 import { useCompany } from "@/hooks/useCompany";
+import PageMetadata from "@/components/layout/PageMetadata";
 
 export function About() {
   const { data: companyInfo } = useCompany();
+  const companyName = companyInfo?.name || "Byadhi Cure Lab Private Limited";
+  const description = companyInfo?.aboutIntro || "Learn about Byadhi Cure Lab Private Limited, its pharmaceutical manufacturing focus and commitment to quality healthcare.";
 
   return (
     <>
+      <PageMetadata title={`About | ${companyName}`} description={description} path="/about" />
       <PageHeader
         eyebrow="About us"
         title="A pharmaceutical company built around quality"

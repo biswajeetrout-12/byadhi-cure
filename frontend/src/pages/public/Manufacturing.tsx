@@ -3,10 +3,16 @@ import heroImage from "@/assets/images/hero-facility.jpg";
 import labImage from "@/assets/images/lab-quality.jpg";
 import { PageHeader, Section, SectionHeading } from "@/components/common/Section";
 import { capabilities, equipment, processSteps, safetyStandards } from "@/data/site";
+import PageMetadata from "@/components/layout/PageMetadata";
 
 export function Manufacturing() {
   return (
     <>
+      <PageMetadata
+        title="Pharmaceutical Manufacturing | Byadhi Cure Lab"
+        description="Explore the controlled pharmaceutical manufacturing processes, quality systems and production capabilities at Byadhi Cure Lab."
+        path="/manufacturing"
+      />
       <PageHeader
         eyebrow="Manufacturing"
         title="Controlled processes, repeatable quality"

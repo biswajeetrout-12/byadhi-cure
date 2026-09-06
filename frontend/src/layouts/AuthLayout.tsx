@@ -2,6 +2,7 @@ import { Link, Outlet } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
 import { company } from "@/data/company";
 import { useCompany } from "@/hooks/useCompany";
+import ScrollToTop from "@/components/layout/ScrollToTop";
 import logo from "@/assets/logos/logo.png";
 
 export function AuthLayout() {
@@ -10,6 +11,7 @@ export function AuthLayout() {
 
   return (
     <div className="relative min-h-screen flex flex-col justify-center items-center py-12 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-primary/5 via-background to-accent/5 overflow-hidden">
+      <ScrollToTop />
       {/* Background patterns */}
       <div className="absolute inset-0 bg-grid opacity-30 pointer-events-none" />
       <div className="absolute inset-0 bg-dots opacity-40 pointer-events-none" />

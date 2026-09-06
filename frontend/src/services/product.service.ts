@@ -6,6 +6,8 @@ export type ProductSubmission = {
   category: string;
   shortDescription: string;
   description: string;
+  seoTitle: string;
+  seoDescription: string;
   composition: string;
   uses: string;
   benefits: string;
@@ -23,6 +25,8 @@ function buildProductFormData(product: ProductSubmission): FormData {
   formData.append("category", product.category);
   formData.append("shortDescription", product.shortDescription);
   formData.append("description", product.description);
+  formData.append("seoTitle", product.seoTitle);
+  formData.append("seoDescription", product.seoDescription);
   formData.append("composition", product.composition);
   formData.append("uses", product.uses);
   formData.append("benefits", product.benefits);

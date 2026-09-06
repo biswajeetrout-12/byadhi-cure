@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useParams, Link } from "react-router-dom";
 import { Download, MessageSquare, FlaskConical, Zap, Package, Thermometer, Factory, BookOpen } from "lucide-react";
 import { Button, LinkButton } from "@/components/common/Button";
@@ -7,6 +7,7 @@ import ProductGrid from "@/components/products/ProductGrid";
 import Loader from "@/components/common/Loader";
 import { useProduct, useProducts } from "@/hooks/useProducts";
 import { createProductBrochure } from "@/lib/productBrochure";
+import PageMetadata, { getSiteUrl } from "@/components/layout/PageMetadata";
 
 function ProductNotFound() {
   return (
@@ -120,48 +121,6 @@ export function ProductDetails() {
   const { data: product, isLoading, isError } = useProduct(slug || "");
   const { data: allProducts } = useProducts();
 
-  useEffect(() => {
-    if (!product) return undefined;
-
-    const siteUrl = (import.meta.env["VITE_SITE_URL"] || window.location.origin).replace(/\/$/, "");
-    const canonicalUrl = `${siteUrl}/products/${product.slug || slug}`;
-    const description = product.shortDescription || product.description;
-    const previousTitle = document.title;
-    const previousDescription = document.querySelector('meta[name="description"]')?.getAttribute("content") ?? undefined;
-    const previousCanonical = document.querySelector('link[rel="canonical"]')?.getAttribute("href") ?? undefined;
-    const descriptionTag = document.querySelector('meta[name="description"]') || document.createElement("meta");
-    descriptionTag.setAttribute("name", "description");
-    descriptionTag.setAttribute("content", description);
-    document.head.appendChild(descriptionTag);
-    const canonicalTag = document.querySelector('link[rel="canonical"]') || document.createElement("link");
-    canonicalTag.setAttribute("rel", "canonical");
-    canonicalTag.setAttribute("href", canonicalUrl);
-    document.head.appendChild(canonicalTag);
-    document.title = `${product.name} | Byadhi Cure Lab`;
-
-    const structuredData = document.createElement("script");
-    structuredData.type = "application/ld+json";
-    structuredData.id = "product-structured-data";
-    structuredData.textContent = JSON.stringify({
-      "@context": "https://schema.org",
-      "@type": "Product",
-      name: product.name,
-      ...(product.image ? { image: [product.image] } : {}),
-      description,
-    }).replace(/</g, "\\u003c");
-    document.getElementById("product-structured-data")?.remove();
-    document.head.appendChild(structuredData);
-
-    return () => {
-      document.title = previousTitle;
-      if (previousDescription === undefined) descriptionTag.remove();
-      else descriptionTag.setAttribute("content", previousDescription);
-      if (previousCanonical === undefined) canonicalTag.remove();
-      else canonicalTag.setAttribute("href", previousCanonical);
-      structuredData.remove();
-    };
-  }, [product, slug]);
-
   if (isLoading) {
     return (
       <div className="min-h-[50vh] flex items-center justify-center">
@@ -173,6 +132,9 @@ export function ProductDetails() {
   if (isError || !product) {
     return <ProductNotFound />;
   }
+
+  const description = product.seoDescription || product.shortDescription || product.description;
+  const productUrl = `${getSiteUrl()}/products/${product.slug || slug}`;
 
   const related = allProducts
     ? allProducts.filter((p) => p.id !== product.id).slice(0, 3)
@@ -189,6 +151,31 @@ export function ProductDetails() {
 
   return (
     <>
+      <PageMetadata
+        title={product.seoTitle || `${product.name} | Byadhi Cure Lab`}
+        description={description}
+        path={`/products/${product.slug || slug}`}
+        {...(product.image ? { image: product.image } : {})}
+        structuredData={[
+          {
+            "@context": "https://schema.org",
+            "@type": "Product",
+            name: product.name,
+            url: productUrl,
+            ...(product.image ? { image: [product.image] } : {}),
+            description,
+          },
+          {
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            itemListElement: [
+              { "@type": "ListItem", position: 1, name: "Home", item: `${getSiteUrl()}/` },
+              { "@type": "ListItem", position: 2, name: "Products", item: `${getSiteUrl()}/products` },
+              { "@type": "ListItem", position: 3, name: product.name, item: productUrl },
+            ],
+          },
+        ]}
+      />
       <Section>
         {/* Breadcrumb */}
         <nav className="mb-8 text-sm text-muted-foreground">
@@ -205,7 +192,7 @@ export function ProductDetails() {
           <div className="self-start overflow-hidden rounded-2xl border border-border/60 bg-gradient-to-br from-primary/5 to-accent/5 shadow-raised">
             <img
               src={product.image}
-              alt={product.name}
+              alt={`${product.name} pharmaceutical product`}
               width={1000}
               height={800}
               className="h-auto w-full object-contain"

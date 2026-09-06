@@ -7,6 +7,8 @@ const productSchema = new mongoose.Schema(
     category: { type: String, required: true, trim: true },
     shortDescription: { type: String, required: true },
     description: { type: String, required: true },
+    seoTitle: { type: String, default: "", trim: true, maxlength: 160 },
+    seoDescription: { type: String, default: "", trim: true, maxlength: 320 },
     image: { type: String, default: "" },
     imagePublicId: { type: String, default: "" },
     composition: { type: [String], default: [] },

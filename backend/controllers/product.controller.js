@@ -44,6 +44,8 @@ function buildProductData(body, existingProduct = null) {
     category: toTrimmedString(body.category) || existingProduct?.category || "",
     shortDescription: toTrimmedString(body.shortDescription) || existingProduct?.shortDescription || "",
     description: toTrimmedString(body.description) || existingProduct?.description || "",
+    seoTitle: body.seoTitle !== undefined ? toTrimmedString(body.seoTitle) : existingProduct?.seoTitle || "",
+    seoDescription: body.seoDescription !== undefined ? toTrimmedString(body.seoDescription) : existingProduct?.seoDescription || "",
     composition:
       body.composition !== undefined ? parseListField(body.composition) : existingProduct?.composition || [],
     uses: body.uses !== undefined ? parseListField(body.uses) : existingProduct?.uses || [],

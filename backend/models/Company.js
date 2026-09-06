@@ -7,6 +7,8 @@ const companySchema = new mongoose.Schema(
     tagline: { type: String, default: "" },
     intro: { type: String, required: true },
     aboutIntro: { type: String, default: "" },
+    seoTitle: { type: String, default: "", trim: true, maxlength: 160 },
+    seoDescription: { type: String, default: "", trim: true, maxlength: 320 },
     founded: { type: Number },
     address: {
       line1: { type: String, default: "" },

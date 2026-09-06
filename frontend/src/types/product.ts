@@ -5,6 +5,8 @@ export interface Product {
   category: string;
   shortDescription: string;
   description: string;
+  seoTitle?: string;
+  seoDescription?: string;
   image: string;
   imagePublicId?: string;
   composition: string[];

@@ -14,7 +14,7 @@ import sitemapRoutes from "./routes/sitemap.routes.js";
 import companyRoutes from "./routes/company.routes.js";
 
 const app = express();
-const PORT = process.env.PORT || 5000;
+const PORT = parseInt(process.env.PORT || 5000, 10);
 
 // ─── Middleware ──────────────────────────────────────────────────────────────
 app.use(cors({
@@ -46,17 +46,64 @@ app.use((err, _req, res, _next) => {
   res.status(500).json({ ok: false, message: "Internal server error" });
 });
 
+// ─── Unhandled Error Handlers ────────────────────────────────────────────────
+process.on("unhandledRejection", (reason, promise) => {
+  console.error("❌ Unhandled Rejection at:", promise, "reason:", reason);
+});
+
+process.on("uncaughtException", (error) => {
+  console.error("❌ Uncaught Exception:", error);
+  process.exit(1);
+});
+
 // ─── Start ───────────────────────────────────────────────────────────────────
 async function start() {
-  await connectDB();
-  await seedAdmin();
-  await seedSuperadmin();
-  await seedProducts();
-  await seedCompany();
-  app.listen(PORT, () => {
-    console.log(`🚀 Server running on http://localhost:${PORT}`);
-    console.log(`📋 API docs: http://localhost:${PORT}/api/health`);
-  });
+  try {
+    await connectDB();
+    await seedAdmin();
+    await seedSuperadmin();
+    await seedProducts();
+    await seedCompany();
+    
+    const tryListen = (retryCount = 0) => {
+      const server = app.listen(PORT, "0.0.0.0", () => {
+        console.log(`🚀 Server running on http://localhost:${PORT}`);
+        console.log(`📋 API docs: http://localhost:${PORT}/api/health`);
+      });
+
+      server.on("error", (err) => {
+        if (err.code === "EADDRINUSE" && retryCount < 3) {
+          console.warn(`⚠️  Port ${PORT} still in use, retrying in 2 seconds...`);
+          setTimeout(() => tryListen(retryCount + 1), 2000);
+        } else {
+          console.error("❌ Failed to start server:", err.message);
+          process.exit(1);
+        }
+      });
+
+      // Graceful shutdown
+      process.on("SIGTERM", () => {
+        console.log("⛔ SIGTERM signal received: closing HTTP server");
+        server.close(() => {
+          console.log("HTTP server closed");
+          process.exit(0);
+        });
+      });
+
+      process.on("SIGINT", () => {
+        console.log("⛔ SIGINT signal received: closing HTTP server");
+        server.close(() => {
+          console.log("HTTP server closed");
+          process.exit(0);
+        });
+      });
+    };
+
+    tryListen();
+  } catch (error) {
+    console.error("❌ Server startup error:", error);
+    process.exit(1);
+  }
 }
 
 start();

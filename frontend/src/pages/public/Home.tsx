@@ -11,6 +11,7 @@ import { certifications } from "@/data/site";
 import { useProducts } from "@/hooks/useProducts";
 import Loader from "@/components/common/Loader";
 import { useCompany } from "@/hooks/useCompany";
+import PageMetadata, { getSiteUrl } from "@/components/layout/PageMetadata";
 
 const icons = [Award, FlaskConical, ShieldCheck, Factory];
 
@@ -18,10 +19,21 @@ export function Home() {
   const { data: productsList, isLoading } = useProducts();
   const { data: companyFromDb } = useCompany();
   const company = companyFromDb || fallbackCompany;
+  const metadataName = companyFromDb?.name || "Byadhi Cure Lab Private Limited";
+  const metadataDescription = companyFromDb?.seoDescription || companyFromDb?.intro || "Pharmaceutical manufacturing and healthcare products from Byadhi Cure Lab Private Limited.";
   const featured = productsList ? productsList.slice(0, 3) : [];
 
   return (
     <>
+      <PageMetadata
+        title={metadataName}
+        description={metadataDescription}
+        path="/"
+        structuredData={[
+          { "@context": "https://schema.org", "@type": "Organization", name: metadataName, url: `${getSiteUrl()}/` },
+          { "@context": "https://schema.org", "@type": "WebSite", name: metadataName, url: `${getSiteUrl()}/` },
+        ]}
+      />
       <section className="relative isolate overflow-hidden">
         <img
           src={heroImage}
@@ -33,13 +45,13 @@ export function Home() {
         <div className="hero-overlay absolute inset-0" />
         <div className="relative mx-auto max-w-7xl px-4 py-24 sm:px-6 md:py-32 lg:px-8">
           <div className="fade-up max-w-2xl">
-            <p className="inline-flex rounded-full border border-primary-foreground/30 px-3 py-1 text-xs font-semibold uppercase tracking-[0.16em] text-primary-foreground/90">
+            <p className="inline-flex rounded-full border border-white/30 px-3 py-1 text-xs font-semibold uppercase tracking-[0.16em] text-white/90">
               WHO-GMP certified manufacturing
             </p>
-            <h1 className="mt-5 text-3xl font-bold leading-tight text-primary-foreground md:text-5xl">
+            <h1 className="mt-5 text-3xl font-bold leading-tight text-white md:text-5xl">
               {company.name}
             </h1>
-            <p className="mt-5 text-base leading-relaxed text-primary-foreground/85 md:text-lg">{company.intro}</p>
+            <p className="mt-5 text-base leading-relaxed text-white/85 md:text-lg">{company.intro}</p>
             <div className="mt-8 flex flex-wrap gap-3">
               <LinkButton to="/products" size="lg">
                 Explore Products
