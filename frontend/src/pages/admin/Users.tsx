@@ -8,7 +8,7 @@ import { useCreateAdminUser, useUsers } from "@/hooks/useAuth";
 
 const fieldClass = "mt-1.5 w-full rounded-md border border-input bg-background px-3 py-2 text-sm text-foreground outline-none focus:border-primary focus:ring-2 focus:ring-ring/25";
 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
-const passwordPattern = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
+const passwordPattern = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*?&]{8,}$/;
 
 export function Users() {
   const { data: users, isLoading, isError } = useUsers();
@@ -25,7 +25,7 @@ export function Users() {
         return;
       }
       if (!passwordPattern.test(form.password)) {
-        setError("Password must be at least 8 characters and contain only letters and numbers, including both.");
+        setError("Password must be at least 8 characters, include a letter and a number, and may contain special characters.");
         return;
       }
     try {

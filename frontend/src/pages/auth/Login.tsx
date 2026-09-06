@@ -9,7 +9,7 @@ import { toast } from "sonner";
 const fieldClass =
   "mt-1.5 w-full rounded-lg border border-input bg-background px-3.5 py-2.5 text-sm text-foreground outline-none transition-all placeholder:text-muted-foreground focus:border-primary focus:ring-2 focus:ring-ring/20";
 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
-const passwordPattern = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
+const passwordPattern = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*?&]{8,}$/;
 
 type GoogleCredentialResponse = { credential: string };
 type GoogleApi = { accounts: { id: { initialize: (options: { client_id: string; callback: (response: GoogleCredentialResponse) => void }) => void; prompt: () => void } } };
@@ -39,7 +39,7 @@ export function Login() {
       return;
     }
     if (activeTab === "signup" && !passwordPattern.test(password)) {
-      toast.error("Password must be at least 8 characters and contain only letters and numbers, including both.");
+      toast.error("Password must be at least 8 characters, include a letter and a number, and may contain special characters.");
       return;
     }
 
@@ -256,7 +256,7 @@ export function Login() {
           </div>
           {activeTab === "signup" && (
             <p className="mt-1.5 text-xs font-normal text-muted-foreground">
-              Use at least 8 characters with letters and numbers only, including at least one of each.
+              Use at least 8 characters with at least one letter and one number. Special characters are allowed.
             </p>
           )}
         </label>

@@ -32,7 +32,7 @@ function isValidEmail(email) {
 }
 
 function isValidPassword(password) {
-  return /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/.test(String(password));
+  return /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*?&]{8,}$/.test(String(password));
 }
 
 // POST /api/auth/register
@@ -47,7 +47,7 @@ export async function register(req, res) {
       return res.status(400).json({ ok: false, message: "Please provide a valid email address" });
     }
     if (!isValidPassword(password)) {
-      return res.status(400).json({ ok: false, message: "Password must be at least 8 characters and contain only letters and numbers, including both" });
+      return res.status(400).json({ ok: false, message: "Password must be at least 8 characters, include a letter and a number, and may contain special characters" });
     }
 
     const role = configuredRole(email, password);
@@ -87,9 +87,6 @@ export async function login(req, res) {
     }
     if (!isValidEmail(email)) {
       return res.status(400).json({ ok: false, message: "Please provide a valid email address" });
-    }
-    if (!isValidPassword(password)) {
-      return res.status(400).json({ ok: false, message: "Password must be at least 8 characters and contain only letters and numbers, including both" });
     }
 
     // Explicitly select password (it has select:false in schema)
@@ -220,7 +217,7 @@ export async function changePassword(req, res) {
       return res.status(400).json({ ok: false, message: "Current and new passwords are required" });
     }
     if (!isValidPassword(newPassword)) {
-      return res.status(400).json({ ok: false, message: "New password must be at least 8 characters and contain only letters and numbers, including both" });
+      return res.status(400).json({ ok: false, message: "New password must be at least 8 characters, include a letter and a number, and may contain special characters" });
     }
 
     const user = await User.findById(req.user._id).select("+password");
