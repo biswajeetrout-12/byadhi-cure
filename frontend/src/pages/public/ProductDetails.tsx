@@ -23,6 +23,19 @@ function ProductNotFound() {
   );
 }
 
+function ProductTemporaryError() {
+  return (
+    <Section>
+      <div className="max-w-md mx-auto text-center py-12">
+        <h1 className="text-2xl font-bold text-foreground">Product temporarily unavailable</h1>
+        <p className="mt-2 text-muted-foreground">
+          We could not load this product right now. Please try again shortly.
+        </p>
+      </div>
+    </Section>
+  );
+}
+
 const CARD_STYLES = [
   {
     gradient: "from-blue-50 to-indigo-50 dark:from-blue-950/30 dark:to-indigo-950/30",
@@ -118,7 +131,7 @@ function List({ items }: { items: string[] }) {
 
 export function ProductDetails() {
   const { slug } = useParams<{ slug: string }>();
-  const { data: product, isLoading, isError } = useProduct(slug || "");
+  const { data: product, isLoading, isError, error } = useProduct(slug || "");
   const { data: allProducts } = useProducts();
 
   if (isLoading) {
@@ -129,9 +142,11 @@ export function ProductDetails() {
     );
   }
 
-  if (isError || !product) {
+  if (isError && error instanceof Error && "status" in error && error.status === 404) {
     return <ProductNotFound />;
   }
+
+  if (isError || !product) return <ProductTemporaryError />;
 
   const description = product.seoDescription || product.shortDescription || product.description;
   const productUrl = `${getSiteUrl()}/products/${product.slug || slug}`;

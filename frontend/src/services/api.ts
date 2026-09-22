@@ -6,6 +6,16 @@ export const API_BASE_URL = import.meta.env["VITE_API_BASE_URL"] ?? "/api";
 export const delay = <T,>(data: T, ms = 300): Promise<T> => 
   new Promise((resolve) => setTimeout(() => resolve(data), ms));
 
+export class ApiError extends Error {
+  status: number;
+
+  constructor(message: string, status: number) {
+    super(message);
+    this.name = "ApiError";
+    this.status = status;
+  }
+}
+
 export async function apiFetch<T>(
   endpoint: string,
   options: RequestInit = {}
@@ -33,7 +43,7 @@ export async function apiFetch<T>(
   const data = await response.json().catch(() => ({}));
   
   if (!response.ok) {
-    throw new Error(data.message || "An error occurred");
+    throw new ApiError(data.message || "An error occurred", response.status);
   }
 
   return data;

@@ -1,5 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { productService, type ProductSubmission } from "@/services/product.service";
+import { ApiError } from "@/services/api";
 import type { Product } from "@/types/product";
 
 export function useProducts() {
@@ -14,6 +15,11 @@ export function useProduct(slug: string) {
     queryKey: ["product", slug],
     queryFn: () => productService.getProductBySlug(slug),
     enabled: !!slug,
+    retry: (failureCount, error) => {
+      if (error instanceof ApiError && error.status === 404) return false;
+      return failureCount < 2;
+    },
+    retryDelay: (attemptIndex) => Math.min(500 * 2 ** attemptIndex, 1500),
   });
 }
 
