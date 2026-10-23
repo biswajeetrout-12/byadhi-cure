@@ -38,7 +38,7 @@ export function AuthLayout() {
             <img
               src={logo}
               alt="Byadhi Cure Lab Logo"
-              className="h-10 w-10 shrink-0 rounded-full object-cover"
+              className="h-14 w-20 shrink-0 object-contain"
             />
             <div className="text-left">
               <span className="block font-display text-base font-bold leading-tight text-foreground">

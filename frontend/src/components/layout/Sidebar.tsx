@@ -44,7 +44,7 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
             <img
               src={logo}
               alt="Byadhi Cure Lab Logo"
-              className="h-9 w-9 shrink-0 rounded-full object-cover"
+              className="h-12 w-18 shrink-0 object-contain"
             />
             <div className="min-w-0">
               <p className="truncate font-display text-sm font-bold">{activeCompany.shortName}</p>

@@ -20,7 +20,7 @@ function Logo() {
     <img
       src={logo}
       alt="Byadhi Cure Lab Logo"
-      className="h-11 w-11 shrink-0 rounded-full object-cover"
+      className="h-16 w-24 shrink-0 object-contain"
     />
   );
 }

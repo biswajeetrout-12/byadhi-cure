@@ -3,20 +3,20 @@ export const company = {
   shortName: "Byadhi Cure Lab",
   tagline: "Trusted pharmaceutical manufacturing for a healthier tomorrow",
   intro:
-    "Byadhi Cure Lab Private Limited is a leading pharmaceutical company offering a diverse range of medications across neurological, orthopedic, cardiovascular, diabetic, and hypertension care. As an ISO-certified company, we are committed to delivering quality pharmaceutical solutions, with a particular focus on advancing neurological and orthopedic healthcare while addressing cardiovascular and diabetic health challenges.",
+    "Byadhi Cure Lab Private Limited is a leading pharma company offering high-quality pharmaceutical products. It primarily focuses on orthopedic and Neurology sectors. We are recognized for providing ethical pharmaceutical products and reliable distribution support. We aim to provide high-quality, greater efficacy pharma products at affordable prices to every individual. All products are manufactured in WHO, GMP certified units. We follow strict quality control measures to ensure all products meet high standards, including: Safe formulations, Standardized manufacturing, Quality packaging, Regulatory compliance, Consistent product performance.",
   aboutIntro:
-    "Byadhi Cure Lab Private Limited was established to build a dependable pharmaceutical manufacturing partner for healthcare businesses and patients. From raw-material qualification and controlled dispensing through manufacturing, testing, packing and release, our teams follow documented processes designed to protect product quality and traceability.",
+    "Byadhi Cure Lab Private Limited was established on November 6, 2023. The company is led by directors Sarojini Swain and Madhusudan Mansingh. Its core services include medicine manufacturing, marketing, and distribution. The product range includes approximately 200 to 300 formulations, including tablets, capsules, syrups, injections, inhalers, and nutraceuticals. The company aims to make quality medicines, consumables, and surgical items available at affordable prices for all and reduce out-of-pocket expenditure for consumers.",
   founded: 2023,
   address: {
-    line1: "Plot 1537/2418, Phase II",
-    line2: "Bhagabanpur",
+    line1: "Plot No- 963/2151, Prakruti Vihar",
+    line2: "Baramunda",
     city: "Bhubaneswar, Odisha",
     postalCode: "751003",
     country: "India",
   },
   phone: "+91 8763737274",
   altPhone: "+91 7205960325",
-  email: "info@byadhicurelab.com",
+  email: "byadhicurelab2023@gmail.com",
   workingHours: "Monday – Saturday, 8:00 AM – 11:00 PM IST",
   social: [
     { label: "LinkedIn", href: "#" },
@@ -28,7 +28,7 @@ export const company = {
 
 export const highlights = [
   { value: "3+", label: "Years of experience", detail: "Serving healthcare since 2023" },
-  { value: "16+", label: "Products", detail: "Tablets, capsules, syrups & injectables" },
+  { value: "40+", label: "Products", detail: "Tablets, capsules, syrups & injectables" },
   { value: "WHO-GMP", label: "Quality standards", detail: "ISO 9001:2023 certified facility" },
   { value: "8", label: "Production lines", detail: "2 million units monthly capacity" },
 ];
@@ -47,9 +47,9 @@ export const values = [
 ];
 
 export const director = {
-  name: "Tuna Swain",
+  name: "Sarojini Swain",
   designation: "Managing Director",
-  bio: "A pharmaceutical professional with over 25 years of experience in formulation development and regulated manufacturing, Dr. Byadhi founded the company with a simple conviction: quality medicine should never be a compromise.",
+  bio: "A pharmaceutical professional with over 10 years of experience in formulation development and regulated manufacturing, Mrs. Swain founded the company with a simple conviction: quality medicine should never be a compromise.",
   message:
     "Our responsibility does not end at the factory gate. Every tablet we produce carries the trust of a patient we will never meet, and that trust defines how we operate every single day.",
 };
