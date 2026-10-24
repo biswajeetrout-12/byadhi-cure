@@ -1,5 +1,11 @@
 {
   "name": "byadhi-cure",
+  "main": "./worker/index.js",
   "compatibility_date": "2026-09-03",
-  "pages_build_output_dir": "./dist"
+  "assets": {
+    "directory": "./dist",
+    "binding": "ASSETS",
+    "run_worker_first": ["/sitemap.xml"],
+    "not_found_handling": "single-page-application"
+  }
 }
